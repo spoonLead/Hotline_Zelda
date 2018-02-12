@@ -1,41 +1,40 @@
 window.onload = init;
 
+//-----------------------DECLARATIONS---------------------//
+
 var canvas;
 var screen;
-var x = 380;
-var y = 300;
-var up,down,left,right;   //flags for control
 
-//todo UNIT BUFFER
-var units = [];
+var player; var playerSp = new Image(); playerSp.src = "img/player.jpg";
+var hp; var hpSp = new Image(); hpSp.src = "img/food.png";
+var enemy; var enemySp = new Image(); enemySp.src = "img/enemy.jpg";
+var background; var backgroundSp = new Image(); backgroundSp.src = "img/bg.jpg";
+var smooth;
+var up,down,left,right;
+
+var objects = [];
+
+//^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
+
+
+
+//--------------ENGINE--(RENDER--KEYLISTENER--INIT)----------//
 
 function init(){
-  canvas = document.getElementById("canvas");
+  canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  randCoord();
-  tick();
+  player = new Player();
+  objects.push(background = new background(), enemy = new Enemy());
+  //smooth = new Smooth();
+
+  game();       //игровой цикл
 }
 
-function drawRect(x,y,w,h) {
-  screen.fillStyle = "#E4E4E4"
-  screen.fillRect(x,y,w,h);
-}
-
-
-//TODO проверка на выход за границы поля
-function moveRect(e){
-  if(up == true & y>0){
-    y -= 10;
+function render(){
+  for(var i = 0; i < objects.length; i++){
+    objects[i].draw();
   }
-  if(down == true & y<550){
-    y += 10;
-  }
-  if(left == true & x>0){
-    x -= 15;
-  }
-  if(right == true & x<750){
-    x += 15;
-  }
+  player.draw();
 }
 
 function keyListener(){
@@ -43,19 +42,26 @@ function keyListener(){
     switch(e.keyCode){
       case 37:
         left = true;
+        right = false;
       break;
       case 38:
         up = true;
+        down = false;
       break;
       case 39:
         right = true;
+        left = false;
       break;
       case 40:
         down = true;
+        up = false;
+      break;
+      case 16:
+      console.log("shift");
+        player.speed += player.speedUp;
       break;
     }
   }
-
   window.onkeyup = function(e){
     switch(e.keyCode){
       case 37:
@@ -70,45 +76,139 @@ function keyListener(){
       case 40:
         down = false;
       break;
+      case 16:
+        player.speed-= player.speedUp;
+      break;
     }
   }
 }
 
-function tick(){
+function mapScrolling(){
+  if(up == true ){
+    for(var i = 0; i < objects.length; i++){
+        objects[i].y += player.speed;
+    }
+  }
+  if(down == true ){
+    for(var i = 0; i < objects.length; i++){
+        objects[i].y -= player.speed;
+    }
+  }
+  if(left == true ){
+    for(var i = 0; i < objects.length; i++){
+        objects[i].x += player.speed;
+    }
+  }
+  if(right == true){
+    for(var i = 0; i < objects.length; i++){
+        objects[i].x -= player.speed;
+    }
+  }
+}
+//^^^^^^^^^^^^^^ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING!--INIT)^^^^^^^^^^//
+
+
+//-----GAMELOOP-----//
+function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById("canvas").onmousehover = keyListener;
 
-  drawRect(x,y,50,50);
-  moveRect("keydown");
+  render();
   keyListener();
-  step1();
-  requestAnimationFrame(tick);
+  //player.move();
+  mapScrolling();
+
+
+  requestAnimationFrame(game);  //ограничивает fps
 }
 
-function step1(){
+
+//------CLASS PLAYER-------//
+function Player(){
+  this.x = 375;
+  this.y = 275;
+  this.width = 50;
+  this.height = 50;
+  this.speed = 5;
+  this.speedUp = 5;
+
+  this.side = "down";   //направление движения
+}
+
+Player.prototype.move = function(){
+  if(up == true & this.y>0){
+    this.y -= this.speed;
+    }
+  if(down == true & this.y<(canvas.height - this.height)){
+    this.y += this.speed;
+  }
+  if(left == true & this.x>0){
+    this.x -= this.speed;
+  }
+  if(right == true & this.x<canvas.width - this.width){
+    this.x += this.speed;
+  }
+}
+
+Player.prototype.draw = function(){
+  screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
+}
+//^^^^^^CLASS PLAYER^^^^^^//
+
+function Enemy(){
+  this.x = 500;
+  this.y = 300;
+  this.width = 50;
+  this.height = 50;
+}
+
+Enemy.prototype.draw = function(){
+  screen.drawImage(enemySp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
+}
+
+
+function background() {
+  this.x = 0;
+  this.y = 0;
+}
+
+background.prototype.draw = function() {
+  screen.drawImage(backgroundSp, 0, 0, 3058, 3058, this.x, this.y, 3058, 3058);
+}
+
+
+
+// function Smooth(){
+//   this.ACLen;
+//   this.BCLen;
+//   this.ABLen;
+//   this.Str;
+//   this.moveX;
+//   this.moveY;
+// }
 //
-  for (var i = 1; i < 100; i+=2){
-
-    if((units[i - 1] <= (x + 50) & units[i - 1] >= x-10)
-     &                                                           //проверка на столкновение
-     (units[i] <= (y + 50) & units[i] >= y-10))
-     {
-
-       units[i - 1] = Math.floor(Math.random() * 800);
-       units[i] = Math.floor(Math.random() * -3000);
-       console.log("Столкновение");
-     }
-
-    if(units[i] > 600) {units[i] = Math.floor(Math.random() * -3000)}    //проверка на исчезновение
-
-    units[i] += 10;    //движение точек
-    drawRect(units[i - 1], units[i], 10,10);    //отрисовка
-  }
-}
-
-function randCoord(){
-  // add units with random coordinates to massive
-  for (var i = 0; i < 100; i++){
-    if (i % 2 == 0){units[i] = Math.floor(Math.random() * 800);}
-    else {units[i] = Math.floor(Math.random() * -3000)}
-  }
-}
+// Smooth.prototype.comp = function(Ax, Ay, Bx, By){
+//   //console.log(player.x, player.y);
+//   this.ACLen = Bx-Ax;
+//   this.BCLen = By-Ay;
+//   this.ABLen = Math.sqrt(Math.pow(this.ACLen, 2)+Math.pow(this.BCLen, 2));
+//   this.Str = Math.round((Math.ceil((this.ABLen/player.speed)*2))/2);  //округление до большего целового числа
+//   this.moveX = this.ACLen/this.Str;
+//   this.moveY = this.BCLen/this.Str;
+// }
+//
+// Smooth.prototype.move = function(){
+//   if (this.Str > 0){
+//     for(var i = 0; i < objects.length; i++){
+//       objects[i].x -= this.moveX;
+//       objects[i].y -= this.moveY;
+//       this.Str -= 1;
+//     }
+//   }else{
+//     for(var i = 0; i < objects.length; i++){
+//       objects[i].x = objects[i].x%5>2.5?objects[i].x+(5-objects[i].x%5):objects[i].x-(objects[i].x%5);
+//       objects[i].y = objects[i].y%5>2.5?objects[i].y+(5-objects[i].y%5):objects[i].y-(objects[i].y%5);
+//       keyListener.moveFlag = false;
+//     }
+//   }
+// }
