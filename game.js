@@ -38,6 +38,18 @@ function render(){
 }
 
 function keyListener(){
+  window.onmousemove = function(e){
+    this.x = e.offsetX==undefined?e.layerX:e.offsetX-player.width/2;
+    this.y = e.offsetY==undefined?e.layerY:e.offsetY-player.height/2;
+
+    this.BCLen = Math.abs(this.x-player.x);
+    this.ACLen = Math.abs(this.y-player.y);
+    if(this.x>player.x & this.y<player.y){player.beta = (Math.atan(this.BCLen/this.ACLen)*180)/Math.PI;}    //первая четверь
+    else if(this.x<player.x & this.y<player.y){player.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 270 ;}   //вторая четверть
+    else if(this.x<player.x & this.y>player.y){player.beta = Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 180;}   //третья четверть
+    else if(this.x>player.x & this.y>player.y){player.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 90;}   //четвёртая четверть
+    console.log(this.x, this.y, this.BCLen, this.ACLen, player.beta);
+  }
   window.onkeydown = function(e){
     switch(e.keyCode){
       case 37:
@@ -115,9 +127,7 @@ function game(){
 
   render();
   keyListener();
-  //player.move();
   mapScrolling();
-
 
   requestAnimationFrame(game);  //ограничивает fps
 }
@@ -131,6 +141,7 @@ function Player(){
   this.height = 50;
   this.speed = 5;
   this.speedUp = 5;
+  this.beta;
 
   this.side = "down";   //направление движения
 }
@@ -151,7 +162,13 @@ Player.prototype.move = function(){
 }
 
 Player.prototype.draw = function(){
-  screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
+  screen.save();
+  screen.translate(this.x+player.width/2, this.y+player.height/2);
+  screen.rotate((player.beta * Math.PI)/180);
+  screen.drawImage(playerSp, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
+  screen.rotate(-player.beta * Math.PI/180);
+  screen.restore();
+  // screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
 }
 //^^^^^^CLASS PLAYER^^^^^^//
 
