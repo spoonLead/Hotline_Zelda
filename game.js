@@ -9,8 +9,6 @@ var player; var playerSp = new Image(); playerSp.src = "img/player.jpg";
 var hp; var hpSp = new Image(); hpSp.src = "img/food.png";
 var enemy; var enemySp = new Image(); enemySp.src = "img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "img/bg.jpg";
-var smooth;
-var up,down,left,right;
 
 var objects = [];
 
@@ -25,7 +23,6 @@ function init(){
   screen = canvas.getContext("2d");
   player = new Player();
   objects.push(background = new background(), enemy = new Enemy());
-  //smooth = new Smooth();
 
   game();       //игровой цикл
 }
@@ -52,66 +49,72 @@ function keyListener(){
   }
   window.onkeydown = function(e){
     switch(e.keyCode){
-      case 37:
-        left = true;
-        right = false;
+      case 37, 65:
+        player.side.left = true;
+        player.side.right = false;
       break;
-      case 38:
-        up = true;
-        down = false;
+      case 38, 87:
+        player.side.up = true;
+        player.side.down = false;
       break;
-      case 39:
-        right = true;
-        left = false;
+      case 39, 68:
+        player.side.right = true;
+        player.side.left = false;
       break;
-      case 40:
-        down = true;
-        up = false;
+      case 40, 83:
+        player.side.down = true;
+        player.side.up = false;
       break;
-      case 16:
-      console.log("shift");
+      case 16:  //shift - speedboost
         player.speed += player.speedUp;
+      break;
+      case 32:
+          jump = true;
+          player.side.down = player.side.up = player.side.right = player.side.left = true
       break;
     }
   }
   window.onkeyup = function(e){
     switch(e.keyCode){
-      case 37:
-        left = false;
+      case 37, 65:
+        player.side.left = false;
       break;
-      case 38:
-        up = false;
+      case 38, 87:
+        player.side.up = false;
       break;
-      case 39:
-        right = false;
+      case 39, 68:
+        player.side.right = false;
       break;
-      case 40:
-        down = false;
+      case 40, 83:
+        player.side.down = false;
       break;
       case 16:
         player.speed-= player.speedUp;
+      break;
+      case 32:
+        jump = false;
       break;
     }
   }
 }
 
 function mapScrolling(){
-  if(up == true ){
+  if(player.side.up == true ){
     for(var i = 0; i < objects.length; i++){
         objects[i].y += player.speed;
     }
   }
-  if(down == true ){
+  if(player.side.down == true ){
     for(var i = 0; i < objects.length; i++){
         objects[i].y -= player.speed;
     }
   }
-  if(left == true ){
+  if(player.side.left == true ){
     for(var i = 0; i < objects.length; i++){
         objects[i].x += player.speed;
     }
   }
-  if(right == true){
+  if(player.side.right == true){
     for(var i = 0; i < objects.length; i++){
         objects[i].x -= player.speed;
     }
@@ -140,23 +143,32 @@ function Player(){
   this.width = 50;
   this.height = 50;
   this.speed = 5;
-  this.speedUp = 5;
+  this.speedBoost = 5;
   this.beta;
 
-  this.side = "down";   //направление движения
+  this.side = {
+    left : false,
+    right: false,
+    up: false,
+    down: false,
+
+    jump: false,
+    jumpTime: 2, //seconds
+    jumpTimeLost: 2,
+  }
 }
 
 Player.prototype.move = function(){
-  if(up == true & this.y>0){
+  if(player.side.up == true & this.y>0){
     this.y -= this.speed;
     }
-  if(down == true & this.y<(canvas.height - this.height)){
+  if(player.side.down == true & this.y<(canvas.height - this.height)){
     this.y += this.speed;
   }
-  if(left == true & this.x>0){
+  if(player.side.left == true & this.x>0){
     this.x -= this.speed;
   }
-  if(right == true & this.x<canvas.width - this.width){
+  if(player.side.right == true & this.x<canvas.width - this.width){
     this.x += this.speed;
   }
 }
