@@ -14,10 +14,7 @@ var objects = [];
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
-
-
-//--------------ENGINE--(RENDER--KEYLISTENER--INIT)----------//
-
+//----------------------INITIALISATION--------------------//
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
@@ -26,6 +23,10 @@ function init(){
 
   game();       //игровой цикл
 }
+//^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
+
+//--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING--INIT)----------//
+
 
 function render(){
   for(var i = 0; i < objects.length; i++){
@@ -34,62 +35,62 @@ function render(){
   player.draw();
 }
 
-function keyListener(){
+  function keyListener(obj){
   window.onmousemove = function(e){
-    this.x = e.offsetX==undefined?e.layerX:e.offsetX-player.width/2;
-    this.y = e.offsetY==undefined?e.layerY:e.offsetY-player.height/2;
+    this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;
+    this.y = e.offsetY==undefined?e.layerY:e.offsetY-obj.height/2;
 
-    this.BCLen = Math.abs(this.x-player.x);
-    this.ACLen = Math.abs(this.y-player.y);
-    if(this.x>player.x & this.y<player.y){player.beta = (Math.atan(this.BCLen/this.ACLen)*180)/Math.PI;}    //первая четверь
-    else if(this.x<player.x & this.y<player.y){player.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 270 ;}   //вторая четверть
-    else if(this.x<player.x & this.y>player.y){player.beta = Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 180;}   //третья четверть
-    else if(this.x>player.x & this.y>player.y){player.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 90;}   //четвёртая четверть
-    console.log(this.x, this.y, this.BCLen, this.ACLen, player.beta);
+    this.BCLen = Math.abs(this.x-obj.x);
+    this.ACLen = Math.abs(this.y-obj.y);
+    if(this.x>obj.x & this.y<obj.y){obj.beta = (Math.atan(this.BCLen/this.ACLen)*180)/Math.PI;}    //первая четверь
+    else if(this.x<obj.x & this.y<obj.y){obj.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 270 ;}   //вторая четверть
+    else if(this.x<obj.x & this.y>obj.y){obj.beta = Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 180;}   //третья четверть
+    else if(this.x>obj.x & this.y>obj.y){obj.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 90;}   //четвёртая четверть
+    console.log(this.x, this.y, this.BCLen, this.ACLen, obj.beta);
   }
   window.onkeydown = function(e){
     switch(e.keyCode){
       case 37, 65:
-        player.side.left = true;
-        player.side.right = false;
+        obj.side.left = true;
+        obj.side.right = false;
       break;
       case 38, 87:
-        player.side.up = true;
-        player.side.down = false;
+        obj.side.up = true;
+        obj.side.down = false;
       break;
       case 39, 68:
-        player.side.right = true;
-        player.side.left = false;
+        obj.side.right = true;
+        obj.side.left = false;
       break;
       case 40, 83:
-        player.side.down = true;
-        player.side.up = false;
+        obj.side.down = true;
+        obj.side.up = false;
       break;
       case 16:  //shift - speedboost
-        player.speed += player.speedUp;
+        obj.speed += obj.speedBoost;
       break;
       case 32:
           jump = true;
-          player.side.down = player.side.up = player.side.right = player.side.left = true
+          obj.side.down = obj.side.up = obj.side.right = obj.side.left = true
       break;
     }
   }
   window.onkeyup = function(e){
     switch(e.keyCode){
       case 37, 65:
-        player.side.left = false;
+        obj.side.left = false;
       break;
       case 38, 87:
-        player.side.up = false;
+        obj.side.up = false;
       break;
       case 39, 68:
-        player.side.right = false;
+        obj.side.right = false;
       break;
       case 40, 83:
-        player.side.down = false;
+        obj.side.down = false;
       break;
       case 16:
-        player.speed-= player.speedUp;
+        obj.speed-= obj.speedBoost;
       break;
       case 32:
         jump = false;
@@ -98,25 +99,25 @@ function keyListener(){
   }
 }
 
-function mapScrolling(){
-  if(player.side.up == true ){
+function mapScrolling(obj){
+  if(obj.side.up == true ){
     for(var i = 0; i < objects.length; i++){
-        objects[i].y += player.speed;
+        objects[i].y += obj.speed;
     }
   }
-  if(player.side.down == true ){
+  if(obj.side.down == true ){
     for(var i = 0; i < objects.length; i++){
-        objects[i].y -= player.speed;
+        objects[i].y -= obj.speed;
     }
   }
-  if(player.side.left == true ){
+  if(obj.side.left == true ){
     for(var i = 0; i < objects.length; i++){
-        objects[i].x += player.speed;
+        objects[i].x += obj.speed;
     }
   }
-  if(player.side.right == true){
+  if(obj.side.right == true){
     for(var i = 0; i < objects.length; i++){
-        objects[i].x -= player.speed;
+        objects[i].x -= obj.speed;
     }
   }
 }
@@ -129,8 +130,8 @@ function game(){
   document.getElementById("canvas").onmousehover = keyListener;
 
   render();
-  keyListener();
-  mapScrolling();
+  keyListener(player);
+  mapScrolling(player);
 
   requestAnimationFrame(game);  //ограничивает fps
 }
