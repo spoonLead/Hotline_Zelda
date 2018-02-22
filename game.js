@@ -18,7 +18,7 @@ var objects = [];
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  player = new Player();
+  player = new Player(canvas.width/2-25, canvas.height/2-25);
   objects.push(background = new background(), enemy = new Enemy());
 
   game();       //игровой цикл
@@ -138,51 +138,55 @@ function game(){
 
 
 //------CLASS PLAYER-------//
-function Player(){
-  this.x = 375;
-  this.y = 275;
-  this.width = 50;
-  this.height = 50;
-  this.speed = 5;
-  this.speedBoost = 5;
-  this.beta;
+class Player{
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+    this.width = 50;
+    this.height = 50;
+    this.speed = 5;
+    this.speedBoost = 5;
+    this.beta;
 
-  this.side = {
-    left : false,
-    right: false,
-    up: false,
-    down: false,
+    this.side = {
+      left : false,
+      right: false,
+      up: false,
+      down: false,
 
-    jump: false,
-    jumpTime: 2, //seconds
-    jumpTimeLost: 2,
-  }
-}
-
-Player.prototype.move = function(){
-  if(player.side.up == true & this.y>0){
-    this.y -= this.speed;
+      jump: false,
+      jumpTime: 2, //seconds
+      jumpTimeLost: 2,
     }
-  if(player.side.down == true & this.y<(canvas.height - this.height)){
-    this.y += this.speed;
   }
-  if(player.side.left == true & this.x>0){
-    this.x -= this.speed;
+
+  move(){
+    if(player.side.up == true & this.y>0){
+      this.y -= this.speed;
+    }
+    if(player.side.down == true & this.y<(canvas.height - this.height)){
+      this.y += this.speed;
+    }
+    if(player.side.left == true & this.x>0){
+      this.x -= this.speed;
+    }
+    if(player.side.right == true & this.x<canvas.width - this.width){
+      this.x += this.speed;
+    }
   }
-  if(player.side.right == true & this.x<canvas.width - this.width){
-    this.x += this.speed;
+
+  draw(){
+    screen.save();
+    screen.translate(this.x+player.width/2, this.y+player.height/2);
+    screen.rotate((player.beta * Math.PI)/180);
+    screen.drawImage(playerSp, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
+    screen.rotate(-player.beta * Math.PI/180);
+    screen.restore();
+    // screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
   }
 }
 
-Player.prototype.draw = function(){
-  screen.save();
-  screen.translate(this.x+player.width/2, this.y+player.height/2);
-  screen.rotate((player.beta * Math.PI)/180);
-  screen.drawImage(playerSp, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
-  screen.rotate(-player.beta * Math.PI/180);
-  screen.restore();
-  // screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
-}
+
 //^^^^^^CLASS PLAYER^^^^^^//
 
 function Enemy(){
