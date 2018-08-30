@@ -1,14 +1,24 @@
 import os
 
-dirs = os.listdir('./')
+
+dirs = {
+    "engine" : './engine',
+    "graphics" : './graphics',
+    "game" : './game'
+}
+
 outFile = open('main.js', 'w', encoding = 'UTF-8')
 outCodeString = ''
 
-for file in dirs:
-    if file != 'linker.py' and file!= 'main.js':
-        openFile = open(file, mode = 'r',encoding = 'UTF-8')
-        outCodeString += openFile.read()+'\n'
-        openFile.close()
+for dir in dirs.values():
+    filesList = os.listdir(dir)
+    for file in filesList:
+        if file != 'linker.py' and file!= 'main.js':
+            openFile = open(str(dir)+'/'+str(file), mode = 'r',encoding = 'UTF-8')
+            outCodeString += openFile.read()+'\n'
+            openFile.close()
+
+
 
 outFile.write(outCodeString)
 outFile.close()
