@@ -1,6 +1,6 @@
 //------CLASS PLAYER-------//
 class Player{
-  constructor(x, y){
+  constructor(x, y){    //x,y - started coordinates
     this.x = x;
     this.y = y;
     this.width = 50;
@@ -43,7 +43,6 @@ class Player{
     screen.drawImage(playerSp, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
     screen.rotate(-player.beta * Math.PI/180);
     screen.restore();
-    // screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
   }
 }
 
