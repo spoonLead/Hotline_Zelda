@@ -4,6 +4,7 @@ window.onload = init;
 var canvas;
 var screen;
 
+//TODO add the dictionary of image path's for models
 var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
@@ -22,9 +23,6 @@ function init(){
   game();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
-
-
-
 
 //-----GAMELOOP-----//
 function game(){

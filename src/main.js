@@ -1,4 +1,4 @@
-//--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING--INIT)----------//
+//--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING)----------//
 
 
 function render(){
@@ -23,28 +23,24 @@ function keyListener(obj){
   }
   window.onkeydown = function(e){
     switch(e.keyCode){
-      case 37, 65:
+      case 37, 65:    //'a' '<-'
         obj.side.left = true;
         obj.side.right = false;
       break;
-      case 38, 87:
+      case 38, 87:    //'w' '/\'
         obj.side.up = true;
         obj.side.down = false;
       break;
-      case 39, 68:
+      case 39, 68:    //'d' '->'
         obj.side.right = true;
         obj.side.left = false;
       break;
-      case 40, 83:
+      case 40, 83:    //'s' '\/'
         obj.side.down = true;
         obj.side.up = false;
       break;
       case 16:  //shift - speedboost
         obj.speed += obj.speedBoost;
-      break;
-      case 32:
-          jump = true;
-          obj.side.down = obj.side.up = obj.side.right = obj.side.left = true
       break;
     }
   }
@@ -72,6 +68,32 @@ function keyListener(obj){
   }
 }
 
+class Camera{
+  constructor(){
+    this.x;
+    this.y;
+    this.speed;
+    this.mode;
+  }
+
+  //TODO this is the old mapScrolling func; add more arguments
+  focusOn(obj){
+    //OLD MAPSCROLLING
+  }
+
+  //TODO control the camera from keyListener
+  freeWalk(){
+
+  }
+
+  //TODO moving camera to input coordinates
+  goToCoord(){
+    
+  }
+
+}
+
+
 function mapScrolling(obj){
   if(obj.side.up == true ){
     for(var i = 0; i < objects.length; i++){
@@ -94,7 +116,7 @@ function mapScrolling(obj){
     }
   }
 }
-//^^^^^^^^^^^^^^ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING!--INIT)^^^^^^^^^^//
+//^^^^^^^^^^^^^^ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING!)^^^^^^^^^^//
 
 window.onload = init;
 
@@ -102,6 +124,7 @@ window.onload = init;
 var canvas;
 var screen;
 
+//TODO add the dictionary of image path's for models
 var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
@@ -121,9 +144,6 @@ function init(){
 }
 //^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
 
-
-
-
 //-----GAMELOOP-----//
 function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
@@ -138,18 +158,6 @@ function game(){
 
 
 
-function Enemy(){
-  this.x = 500;
-  this.y = 300;
-  this.width = 50;
-  this.height = 50;
-}
-
-Enemy.prototype.draw = function(){
-  screen.drawImage(enemySp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
-}
-
-
 function background() {
   this.x = 0;
   this.y = 0;
@@ -159,10 +167,9 @@ background.prototype.draw = function() {
   screen.drawImage(backgroundSp, 0, 0, 1024, 1024, this.x, this.y, 1024, 1024);
 }
 
-
 //------CLASS PLAYER-------//
 class Player{
-  constructor(x, y){
+  constructor(x, y){    //x,y - started coordinates
     this.x = x;
     this.y = y;
     this.width = 50;
@@ -205,9 +212,19 @@ class Player{
     screen.drawImage(playerSp, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
     screen.rotate(-player.beta * Math.PI/180);
     screen.restore();
-    // screen.drawImage(playerSp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
   }
 }
 
 //^^^^^^CLASS PLAYER^^^^^^//
+
+function Enemy(){
+  this.x = 500;
+  this.y = 300;
+  this.width = 50;
+  this.height = 50;
+}
+
+Enemy.prototype.draw = function(){
+  screen.drawImage(enemySp, 0, 0, 50, 50, this.x, this.y, this.width, this.height);
+}
 

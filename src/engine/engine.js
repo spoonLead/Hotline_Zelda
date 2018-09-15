@@ -1,4 +1,4 @@
-//--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING--INIT)----------//
+//--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING)----------//
 
 
 function render(){
@@ -23,28 +23,24 @@ function keyListener(obj){
   }
   window.onkeydown = function(e){
     switch(e.keyCode){
-      case 37, 65:
+      case 37, 65:    //'a' '<-'
         obj.side.left = true;
         obj.side.right = false;
       break;
-      case 38, 87:
+      case 38, 87:    //'w' '/\'
         obj.side.up = true;
         obj.side.down = false;
       break;
-      case 39, 68:
+      case 39, 68:    //'d' '->'
         obj.side.right = true;
         obj.side.left = false;
       break;
-      case 40, 83:
+      case 40, 83:    //'s' '\/'
         obj.side.down = true;
         obj.side.up = false;
       break;
       case 16:  //shift - speedboost
         obj.speed += obj.speedBoost;
-      break;
-      case 32:
-          jump = true;
-          obj.side.down = obj.side.up = obj.side.right = obj.side.left = true
       break;
     }
   }
@@ -72,6 +68,32 @@ function keyListener(obj){
   }
 }
 
+class Camera{
+  constructor(){
+    this.x;
+    this.y;
+    this.speed;
+    this.mode;
+  }
+
+  //TODO this is the old mapScrolling func; add more arguments
+  focusOn(obj){
+    //OLD MAPSCROLLING
+  }
+
+  //TODO control the camera from keyListener
+  freeWalk(){
+
+  }
+
+  //TODO moving camera to input coordinates
+  goToCoord(){
+    
+  }
+
+}
+
+
 function mapScrolling(obj){
   if(obj.side.up == true ){
     for(var i = 0; i < objects.length; i++){
@@ -94,4 +116,4 @@ function mapScrolling(obj){
     }
   }
 }
-//^^^^^^^^^^^^^^ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING!--INIT)^^^^^^^^^^//
+//^^^^^^^^^^^^^^ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING!)^^^^^^^^^^//
