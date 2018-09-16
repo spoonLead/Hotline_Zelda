@@ -78,7 +78,26 @@ class Camera{
 
   //TODO this is the old mapScrolling func; add more arguments
   focusOn(obj){
-    //OLD MAPSCROLLING
+    if(obj.side.up == true ){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].y += obj.speed;
+      }
+    }
+    if(obj.side.down == true ){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].y -= obj.speed;
+      }
+    }
+    if(obj.side.left == true ){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].x += obj.speed;
+      }
+    }
+    if(obj.side.right == true){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].x -= obj.speed;
+      }
+    }
   }
 
   //TODO control the camera from keyListener
@@ -88,7 +107,7 @@ class Camera{
 
   //TODO moving camera to input coordinates
   goToCoord(){
-    
+
   }
 
 }
