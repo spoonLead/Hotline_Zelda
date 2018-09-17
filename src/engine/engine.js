@@ -8,6 +8,69 @@ function render(){
   player.draw();
 }
 
+function keyListener2(dic){
+  window.onkeydown = function(e){
+    switch(e.keyCode){
+      case 37, 65:    //'a' '<-'
+        dic["left"] = true;
+      break;
+      case 38, 87:    //'w' '/\'
+        dic["up"] = true;
+      break;
+      case 39, 68:    //'d' '->'
+        dic["right"] = true;
+      break;
+      case 40, 83:    //'s' '\/'
+        dic["down"] = true;
+      break;
+    }
+  }
+  window.onkeyup = function(e){
+    switch(e.keyCode){
+      case 37, 65:      //'a' '<-'
+        dic["left"] = false;
+      break;
+      case 38, 87:      //'w' '/\'
+        dic["up"] = false;
+      break;
+      case 39, 68:      //'d' '->'
+      dic["right"] = false;
+      break;
+      case 40, 83:      //'s' '\/'
+      dic["down"] = false;
+      break;
+    }
+  }
+  return dic;
+}
+
+function keyListener3(dic){
+/*
+  for(key in dic){
+    dic[key] = false;
+  }
+*/
+  window.onkeydown = function(e){
+    switch(e.keyCode){
+      case 37, 65:    //'a' '<-'
+        dic["left"] = true;
+      break;
+      case 38, 87:    //'w' '/\'
+        dic["up"] = true;
+      break;
+      case 39, 68:    //'d' '->'
+        dic["right"] = true;
+      break;
+      case 40, 83:    //'s' '\/'
+        dic["down"] = true;
+      break;
+    }
+  }
+  return dic;
+}
+
+
+
 function keyListener(obj){
   window.onmousemove = function(e){
     this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;
@@ -68,7 +131,7 @@ function keyListener(obj){
   }
 }
 
-class Camera{
+class camera{
   constructor(){
     this.x;
     this.y;

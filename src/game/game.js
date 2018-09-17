@@ -8,6 +8,7 @@ var screen;
 var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
+var dic
 
 var objects = [];
 
@@ -20,6 +21,12 @@ function init(){
   player = new Player(canvas.width/2-25, canvas.height/2-25);
   objects.push(background = new background(), enemy = new Enemy());
 
+  dict =
+  {"left":false,
+  "right":false,
+  "up":false,
+  "down":false,}
+
   game();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
@@ -30,9 +37,10 @@ function game(){
   document.getElementById("canvas").onmousehover = keyListener;
 
   render();
-  keyListener(player);
-  mapScrolling(player);
+  //keyListener(player);
+  //mapScrolling(player);
 
+  console.log(keyListener3(dict));
   requestAnimationFrame(game);  //ограничивает fps
 }
 

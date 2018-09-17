@@ -8,6 +8,70 @@ function render(){
   player.draw();
 }
 
+function keyListener2(dic){
+  window.onkeydown = function(e){
+    switch(e.keyCode){
+      case 37, 65:    //'a' '<-'
+        dic["left"] = true;
+      break;
+      case 38, 87:    //'w' '/\'
+        dic["up"] = true;
+      break;
+      case 39, 68:    //'d' '->'
+        dic["right"] = true;
+      break;
+      case 40, 83:    //'s' '\/'
+        dic["down"] = true;
+      break;
+    }
+  }
+  window.onkeyup = function(e){
+    switch(e.keyCode){
+      case 37, 65:      //'a' '<-'
+        dic["left"] = false;
+      break;
+      case 38, 87:      //'w' '/\'
+        dic["up"] = false;
+      break;
+      case 39, 68:      //'d' '->'
+      dic["right"] = false;
+      break;
+      case 40, 83:      //'s' '\/'
+      dic["down"] = false;
+      break;
+    }
+  }
+  return dic;
+}
+
+function keyListener3(dic){
+/*
+  for(key in dic){
+    dic[key] = false;
+  }
+*/
+  window.onkeydown = function(e){
+    switch(e.keyCode){
+      case 37, 65:    //'a' '<-'
+        dic["left"] = true;
+        console.log(dic["left"]);
+      break;
+      case 38, 87:    //'w' '/\'
+        dic["up"] = true;
+      break;
+      case 39, 68:    //'d' '->'
+        dic["right"] = true;
+      break;
+      case 40, 83:    //'s' '\/'
+        dic["down"] = true;
+      break;
+    }
+  }
+  return dic
+}
+
+
+
 function keyListener(obj){
   window.onmousemove = function(e){
     this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;
@@ -68,7 +132,7 @@ function keyListener(obj){
   }
 }
 
-class Camera{
+class camera{
   constructor(){
     this.x;
     this.y;
@@ -78,7 +142,26 @@ class Camera{
 
   //TODO this is the old mapScrolling func; add more arguments
   focusOn(obj){
-    //OLD MAPSCROLLING
+    if(obj.side.up == true ){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].y += obj.speed;
+      }
+    }
+    if(obj.side.down == true ){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].y -= obj.speed;
+      }
+    }
+    if(obj.side.left == true ){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].x += obj.speed;
+      }
+    }
+    if(obj.side.right == true){
+      for(var i = 0; i < objects.length; i++){
+          objects[i].x -= obj.speed;
+      }
+    }
   }
 
   //TODO control the camera from keyListener
@@ -88,7 +171,7 @@ class Camera{
 
   //TODO moving camera to input coordinates
   goToCoord(){
-    
+
   }
 
 }
@@ -128,6 +211,7 @@ var screen;
 var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
+var dic
 
 var objects = [];
 
@@ -140,6 +224,12 @@ function init(){
   player = new Player(canvas.width/2-25, canvas.height/2-25);
   objects.push(background = new background(), enemy = new Enemy());
 
+  dict =
+  {"left":false,
+  "right":false,
+  "up":false,
+  "down":false,}
+
   game();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
@@ -150,9 +240,10 @@ function game(){
   document.getElementById("canvas").onmousehover = keyListener;
 
   render();
-  keyListener(player);
-  mapScrolling(player);
+  //keyListener(player);
+  //mapScrolling(player);
 
+  console.log(keyListener3(dict));
   requestAnimationFrame(game);  //ограничивает fps
 }
 
