@@ -21,12 +21,6 @@ function init(){
   player = new Player(canvas.width/2-25, canvas.height/2-25);
   objects.push(background = new background(), enemy = new Enemy());
 
-  dict =
-  {"left":false,
-  "right":false,
-  "up":false,
-  "down":false,}
-
   game();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
@@ -39,8 +33,8 @@ function game(){
   render();
   //keyListener(player);
   //mapScrolling(player);
-
-  console.log(keyListener3(dict));
+  console.log(window.keydown)
+  //keyListener3(dict);
   requestAnimationFrame(game);  //ограничивает fps
 }
 

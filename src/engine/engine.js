@@ -8,20 +8,32 @@ function render(){
   player.draw();
 }
 
-function keyListener2(dic){
+document.addEventListener('keydown', keyListener2)
+document.addEventListener('keyup', keyListener2)
+function keyListener2(event){
+  if(event.type == 'keydown'){
+    window.keydown = event.keyCode;
+  }else{
+    window.keydown = undefined;
+  }
+
+
+  /*
+  window.dic = dict;
+  console.log(dic)
   window.onkeydown = function(e){
     switch(e.keyCode){
       case 37, 65:    //'a' '<-'
-        dic["left"] = true;
+        window.dic["left"] = true;
       break;
       case 38, 87:    //'w' '/\'
         dic["up"] = true;
       break;
       case 39, 68:    //'d' '->'
-        dic["right"] = true;
+        this.dic["right"] = true;
       break;
       case 40, 83:    //'s' '\/'
-        dic["down"] = true;
+        this.dic["down"] = true;
       break;
     }
   }
@@ -34,40 +46,18 @@ function keyListener2(dic){
         dic["up"] = false;
       break;
       case 39, 68:      //'d' '->'
-      dic["right"] = false;
+        dic["right"] = false;
       break;
       case 40, 83:      //'s' '\/'
-      dic["down"] = false;
+        dic["down"] = false;
       break;
     }
   }
-  return dic;
+  console.log(dic)
+  //console.log(dic)
+  //return this.dic;*/
 }
 
-function keyListener3(dic){
-/*
-  for(key in dic){
-    dic[key] = false;
-  }
-*/
-  window.onkeydown = function(e){
-    switch(e.keyCode){
-      case 37, 65:    //'a' '<-'
-        dic["left"] = true;
-      break;
-      case 38, 87:    //'w' '/\'
-        dic["up"] = true;
-      break;
-      case 39, 68:    //'d' '->'
-        dic["right"] = true;
-      break;
-      case 40, 83:    //'s' '\/'
-        dic["down"] = true;
-      break;
-    }
-  }
-  return dic;
-}
 
 
 
