@@ -10,7 +10,7 @@ dirs = {
 
 def toLink(dir, file):
     outCodeString = ''
-    if file != 'linker.py' and file!= 'main.js' and file != 'linker2.py':
+    if file != 'linker.py' and file!= 'main.js':
         openFile = open(str(dir)+'/'+str(file), mode = 'r',encoding = 'UTF-8')
         outCodeString += openFile.read()+'\n'
         openFile.close()

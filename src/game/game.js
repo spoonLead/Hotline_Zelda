@@ -28,13 +28,14 @@ function init(){
 //-----GAMELOOP-----//
 function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
-  document.getElementById("canvas").onmousehover = keyListener;
+
 
   render();
   //keyListener(player);
   //mapScrolling(player);
-  console.log(window.keydown)
-  //keyListener3(dict);
+
+  console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
+
   requestAnimationFrame(game);  //ограничивает fps
 }
 
