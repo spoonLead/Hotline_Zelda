@@ -35,7 +35,7 @@ function game(){
   //mapScrolling(player);
 
   console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
-
+  //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
   requestAnimationFrame(game);  //ограничивает fps
 }
 

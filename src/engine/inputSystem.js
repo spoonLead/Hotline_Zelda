@@ -17,15 +17,33 @@ function keyListener(event){
 //-------------------------MOUSE LISTENER-----------------------//
 
 //MOUSEPOSITION
+
 document.addEventListener('mousemove', mousePagePosition);
-var mousePosition_x = mousePosition_y = 0;
+var mousePagePosition_x = mousePagePosition_y = 0;
 
 function mousePagePosition(event){
   if(event.type == 'mousemove'){
-    mousePosition_x = event.clientX;
-    mousePosition_y = event.clientX;
+    mousePagePosition_x = event.clientX;
+    mousePagePosition_y = event.clientY;
   }
 }
+
+document.addEventListener('mousemove', mouseCanvasPosition);
+var mouseCanvasPosition_x = mouseCanvasPosition_y = 0;
+function mouseCanvasPosition(event){
+  if(event.type == 'mousemove'){
+    if(event.target == canvas){
+      mouseCanvasPosition_x = event.pageX - event.target.offsetLeft,
+      mouseCanvasPosition_y = event.pageY - event.target.offsetTop;
+    }else{
+      mouseCanvasPosition_x = undefined;
+      mouseCanvasPosition_y = undefined;
+    }
+  }
+}
+
+
+//TODO метод, высчитывающий x, y мыши относительно canvas
 
 //MOUSEDOWN
 document.addEventListener('mousedown', mouseDown);
@@ -37,8 +55,8 @@ var mouseDown_button =  {
 
 function mouseDown(event){
   if(event.type == 'mousedown'){
-    mouseDown_x = event.clientX;
-    mouseDown_y = event.clientX;
+    mouseDown_x = mouseCanvasPosition_x;
+    mouseDown_y = mouseCanvasPosition_y;
     if(event.button & 0) mouseDown_button.right = true;
     if(event.button & 1) mouseDown_button.middle = true;
     if(event.button & 2) mouseDown_button.left = true;
