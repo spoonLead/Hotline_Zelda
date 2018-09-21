@@ -14,13 +14,13 @@ function keyListener(event){
 //^^^^^^^^^^^^^^^^^^^^^^^KEYBOARD LISTENER^^^^^^^^^^^^^^^^^^^^^^^//
 
 
+
 //-------------------------MOUSE LISTENER-----------------------//
 
-//MOUSEPOSITION
+//MOUSEPOSITIONS
 
 document.addEventListener('mousemove', mousePagePosition);
 var mousePagePosition_x = mousePagePosition_y = 0;
-
 function mousePagePosition(event){
   if(event.type == 'mousemove'){
     mousePagePosition_x = event.clientX;
@@ -43,8 +43,6 @@ function mouseCanvasPosition(event){
 }
 
 
-//TODO метод, высчитывающий x, y мыши относительно canvas
-
 //MOUSEDOWN
 document.addEventListener('mousedown', mouseDown);
 var mouseDown_x = mouseDown_y = 0;
@@ -52,7 +50,6 @@ var mouseDown_button =  {
   "left":false,
   "middle":false,
   "right":false};
-
 function mouseDown(event){
   if(event.type == 'mousedown'){
     mouseDown_x = mouseCanvasPosition_x;
@@ -63,7 +60,11 @@ function mouseDown(event){
   }
 }
 
-function keyListener2(obj){
+//^^^^^^^^^^^^^^^^^^^^^^^^^MOUSE LISTENER^^^^^^^^^^^^^^^^^^^^^^^^^//
+
+
+// prototype of method. roll object to mouse 
+function rollToMouse(obj){
   window.onmousemove = function(e){
     this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;
     this.y = e.offsetY==undefined?e.layerY:e.offsetY-obj.height/2;
@@ -75,50 +76,5 @@ function keyListener2(obj){
     else if(this.x<obj.x & this.y>obj.y){obj.beta = Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 180;}   //третья четверть
     else if(this.x>obj.x & this.y>obj.y){obj.beta = 90 - Math.atan(this.BCLen/this.ACLen)*180/Math.PI + 90;}   //четвёртая четверть
     console.log(this.x, this.y, this.BCLen, this.ACLen, obj.beta);
-  }
-  window.onkeydown = function(e){
-    switch(e.keyCode){
-      case 37, 65:    //'a' '<-'
-        obj.side.left = true;
-        obj.side.right = false;
-      break;
-      case 38, 87:    //'w' '/\'
-        obj.side.up = true;
-        obj.side.down = false;
-      break;
-      case 39, 68:    //'d' '->'
-        obj.side.right = true;
-        obj.side.left = false;
-      break;
-      case 40, 83:    //'s' '\/'
-        obj.side.down = true;
-        obj.side.up = false;
-      break;
-      case 16:  //shift - speedboost
-        obj.speed += obj.speedBoost;
-      break;
-    }
-  }
-  window.onkeyup = function(e){
-    switch(e.keyCode){
-      case 37, 65:
-        obj.side.left = false;
-      break;
-      case 38, 87:
-        obj.side.up = false;
-      break;
-      case 39, 68:
-        obj.side.right = false;
-      break;
-      case 40, 83:
-        obj.side.down = false;
-      break;
-      case 16:
-        obj.speed-= obj.speedBoost;
-      break;
-      case 32:
-        jump = false;
-      break;
-    }
   }
 }

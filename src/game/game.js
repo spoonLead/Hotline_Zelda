@@ -32,9 +32,10 @@ function game(){
 
   render();
   //keyListener(player);
-  //mapScrolling(player);
+  //mapScrolling_old(player);
+  mapScrolling(objects, "up", 5);
 
-  console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
+  //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
   requestAnimationFrame(game);  //ограничивает fps
 }
