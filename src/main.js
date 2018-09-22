@@ -1,70 +1,74 @@
+var objectsMap = [];
+var objectsRender = [];
+var objectsScrolling = [];
+
+function pushTo(){
+  
+}
+
 //--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING)----------//
 
 
-function render(){
+function render(objects){
   for(var i = 0; i < objects.length; i++){
     objects[i].draw();
   }
   player.draw();
 }
 
-
-class camera{
+//TODO realisation
+class Camera{
   constructor(){
-    this.x;
-    this.y;
+    this.x = canvas.width/2;
+    this.y = canvas.height/2;
     this.speed;
     this.mode;
+    this.focus;
   }
 
   //TODO this is the old mapScrolling func; add more arguments
   focusOn(obj){
-    if(obj.side.up == true ){
-      for(var i = 0; i < objects.length; i++){
-          objects[i].y += obj.speed;
-      }
-    }
-    if(obj.side.down == true ){
-      for(var i = 0; i < objects.length; i++){
-          objects[i].y -= obj.speed;
-      }
-    }
-    if(obj.side.left == true ){
-      for(var i = 0; i < objects.length; i++){
-          objects[i].x += obj.speed;
-      }
-    }
-    if(obj.side.right == true){
-      for(var i = 0; i < objects.length; i++){
-          objects[i].x -= obj.speed;
-      }
-    }
+    this.mode = "focusOn";
+    objectsScrolling.splice(objectsScrolling.indexOf(obj))
+    this.x = obj.x; this. y = obj.y;
   }
 
   //TODO control the camera from keyListener
   freeWalk(){
+    if(this.focus) objectsScrolling.push(this.focus);
+
 
   }
 
   //TODO moving camera to input coordinates
-  goToCoord(){
+  goToCoord(x, y, speed){
+    if(this.focus) objectsScrolling.push(this.focus);
 
+    steps = stepsForShortestRoute(this.x, this.y, x, y, speed);
+
+    for(var i = 0; i < steps[2]; ++i){
+      this.x += steps[0];
+      mapScrolling(objectsScrolling, x, steps[0]);
+      this.y += steps[1];
+      mapScrolling(objectsScrolling, x, steps[1]);
+    }
+    this.x = x;
+    this.y = y;
   }
-
 }
 
-function mapScrolling(objects, side, interval){
-  for(obj = 0; obj < objects.length; ++obj){
-    switch(side){
-      case "left": objects[obj].x -= interval; break;
-      case "right": objects[obj].x += interval; break;
-      case "up": objects[obj].y -= interval; break;
-      case "down": objects[obj].y += interval; break;
+
+//TODO method. checking thefiels 'x' and 'y' in object
+function mapScrolling(objects, sideScroll, interval){
+  for(var obj = 0; obj < objects.length; ++obj){
+    switch(sideScroll){
+      case "x": objects[obj].x += interval; break;
+      case "y": objects[obj].y += interval; break;
     }
   }
 }
 
-
+//OLD FUNCTION
 function mapScrolling_old(objects){
   if(obj.side.up == true ){
     for(var i = 0; i < objects.length; i++){
@@ -171,8 +175,18 @@ function rollToMouse(obj){
 }
 
 function isElemInArr(array, element){
-  if (array.indexOf(event.keyCode) === -1) return true;
+  if (array.indexOf(element) === -1) return true;
   else return false
+}
+
+function stepsForShortestRoute(Ax, Ay, Bx, By, step){
+  this.ACLen = Bx-Ax;
+  this.BCLen = By-Ay;
+  this.ABLen = Math.sqrt(Math.pow(this.ACLen, 2)+Math.pow(this.BCLen, 2));
+  this.steps = Math.floor(this.ABLen/step);  //округление до меньшего целового числа
+  this.stepX = this.ACLen/this.Str;
+  this.stepY = this.BCLen/this.Str;
+  return([stepX, stepY, steps]);
 }
 
 window.onload = init;
@@ -185,35 +199,45 @@ var screen;
 var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
-var dic
 
 var objects = [];
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
-//----------------------INITIALISATION--------------------//
+//------------------------DIFINITION----------------------//
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  player = new Player(canvas.width/2-25, canvas.height/2-25);
-  objects.push(background = new background(), enemy = new Enemy());
+  background = new background(); enemy = new Enemy(); player = new Player(canvas.width/2-25, canvas.height/2-25)
+  camera = new Camera();
+  objectsMap.push(background, enemy, player);
+  objectsRender = objectsMap;
+  objectsScrolling = objectsMap;
 
+
+  camera.focusOn(player);
   game();       //игровой цикл
 }
-//^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
+//^^^^^^^^^^^^^^^^^^^^^^^^DIFINITION^^^^^^^^^^^^^^^^^^^^^^//
 
 //-----GAMELOOP-----//
 function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
 
 
-  render();
+  render(objectsRender);
   //keyListener(player);
   //mapScrolling_old(player);
-  mapScrolling(objects, "up", 5);
+
+  console.log(keyListener_downKeys);
+  if(isElemInArr(keyListener_downKeys, 32)){
+    console.log("key pressed");
+    camera.goToCoord(100, 100,5);
+  }
 
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
+
   requestAnimationFrame(game);  //ограничивает fps
 }
 

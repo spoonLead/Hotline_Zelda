@@ -1,5 +1,6 @@
 import os
 
+#TODO search all '.js' files in src folder 
 outFile = open('main.js', 'w', encoding = 'UTF-8')
 
 dirs = {

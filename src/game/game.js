@@ -8,35 +8,45 @@ var screen;
 var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
-var dic
 
 var objects = [];
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
-//----------------------INITIALISATION--------------------//
+//------------------------DIFINITION----------------------//
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  player = new Player(canvas.width/2-25, canvas.height/2-25);
-  objects.push(background = new background(), enemy = new Enemy());
+  background = new background(); enemy = new Enemy(); player = new Player(canvas.width/2-25, canvas.height/2-25)
+  camera = new Camera();
+  objectsMap.push(background, enemy, player);
+  objectsRender = objectsMap;
+  objectsScrolling = objectsMap;
 
+
+  camera.focusOn(player);
   game();       //игровой цикл
 }
-//^^^^^^^^^^^^^^^^^^^^^^INITIALISATION^^^^^^^^^^^^^^^^^^^^//
+//^^^^^^^^^^^^^^^^^^^^^^^^DIFINITION^^^^^^^^^^^^^^^^^^^^^^//
 
 //-----GAMELOOP-----//
 function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
 
 
-  render();
+  render(objectsRender);
   //keyListener(player);
   //mapScrolling_old(player);
-  mapScrolling(objects, "up", 5);
+
+  console.log(keyListener_downKeys);
+  if(isElemInArr(keyListener_downKeys, 32)){
+    console.log("key pressed");
+    camera.goToCoord(100, 100,5);
+  }
 
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
+
   requestAnimationFrame(game);  //ограничивает fps
 }
 
