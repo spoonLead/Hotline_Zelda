@@ -39,9 +39,8 @@ function game(){
   //mapScrolling_old(player);
 
   console.log(keyListener_downKeys);
-  if(isElemInArr(keyListener_downKeys, 32)){
-    console.log("key pressed");
-    camera.goToCoord(100, 100,5);
+  if(isElemInArr(keyListener_downKeys, '32')){
+    camera.goToCoord(100, 100);
   }
 
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])

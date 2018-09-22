@@ -33,19 +33,11 @@ class Camera{
   }
 
   //TODO moving camera to input coordinates
-  goToCoord(x, y, speed){
-    if(this.focus) objectsScrolling.push(this.focus);
-
-    steps = stepsForShortestRoute(this.x, this.y, x, y, speed);
-
-    for(var i = 0; i < steps[2]; ++i){
-      this.x += steps[0];
-      mapScrolling(objectsScrolling, x, steps[0]);
-      this.y += steps[1];
-      mapScrolling(objectsScrolling, x, steps[1]);
-    }
-    this.x = x;
-    this.y = y;
+  goToCoord(x, y){
+    var deltaX = this.x - x;
+    var deltaY = this.y - y;
+    mapScrolling(objectsScrolling, 'x', deltaX);
+    mapScrolling(objectsScrolling, 'y', deltaY);
   }
 }
 

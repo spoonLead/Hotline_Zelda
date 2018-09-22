@@ -41,19 +41,11 @@ class Camera{
   }
 
   //TODO moving camera to input coordinates
-  goToCoord(x, y, speed){
-    if(this.focus) objectsScrolling.push(this.focus);
-
-    steps = stepsForShortestRoute(this.x, this.y, x, y, speed);
-
-    for(var i = 0; i < steps[2]; ++i){
-      this.x += steps[0];
-      mapScrolling(objectsScrolling, x, steps[0]);
-      this.y += steps[1];
-      mapScrolling(objectsScrolling, x, steps[1]);
-    }
-    this.x = x;
-    this.y = y;
+  goToCoord(x, y){
+    var deltaX = this.x - x;
+    var deltaY = this.y - y;
+    mapScrolling(objectsScrolling, 'x', deltaX);
+    mapScrolling(objectsScrolling, 'y', deltaY);
   }
 }
 
@@ -101,8 +93,7 @@ keyListener_downKeys = []
 function keyListener(event){
   if(event.type == 'keydown'){
     if (isElemInArr(keyListener_downKeys, event.keyCode)) keyListener_downKeys.push(event.keyCode);
-  }
-  else{
+  }else{
     keyListener_downKeys.splice(keyListener_downKeys.indexOf(event.keyCode), 1);
   }
 }
@@ -158,7 +149,7 @@ function mouseDown(event){
 //^^^^^^^^^^^^^^^^^^^^^^^^^MOUSE LISTENER^^^^^^^^^^^^^^^^^^^^^^^^^//
 
 
-// prototype of method. roll object to mouse 
+// prototype of method. roll object to mouse
 function rollToMouse(obj){
   window.onmousemove = function(e){
     this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;
@@ -230,9 +221,8 @@ function game(){
   //mapScrolling_old(player);
 
   console.log(keyListener_downKeys);
-  if(isElemInArr(keyListener_downKeys, 32)){
-    console.log("key pressed");
-    camera.goToCoord(100, 100,5);
+  if(isElemInArr(keyListener_downKeys, '32')){
+    camera.goToCoord(100, 100);
   }
 
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
