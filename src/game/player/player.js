@@ -21,19 +21,11 @@ class Player{
     }
   }
 
-  move(){
-    if(player.side.up == true & this.y>0){
-      this.y -= this.speed;
-    }
-    if(player.side.down == true & this.y<(canvas.height - this.height)){
-      this.y += this.speed;
-    }
-    if(player.side.left == true & this.x>0){
-      this.x -= this.speed;
-    }
-    if(player.side.right == true & this.x<canvas.width - this.width){
-      this.x += this.speed;
-    }
+  move(controlKeys = {left:65, right:68, up:87, down:83}){
+    if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, false);
   }
 
   draw(){

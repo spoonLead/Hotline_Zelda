@@ -1,13 +1,14 @@
 
 //-----------------------KEYBOARD LISTENER---------------------//
-//TODO DEBUG
-document.addEventListener('keydown', keyListener)
-keyListener_downKeys = []
+document.addEventListener('keydown', keyListener);
+document.addEventListener('keyup', keyListener);
+keyListener_downKeys = [];
 
 function keyListener(event){
   if(event.type == 'keydown'){
-    if (isElemInArr(keyListener_downKeys, event.keyCode)) keyListener_downKeys.push(event.keyCode);
-  }else{
+    if (!isElemInArr(keyListener_downKeys, event.keyCode)) keyListener_downKeys.push(event.keyCode);
+  }
+  else{
     keyListener_downKeys.splice(keyListener_downKeys.indexOf(event.keyCode), 1);
   }
 }
@@ -63,7 +64,7 @@ function mouseDown(event){
 //^^^^^^^^^^^^^^^^^^^^^^^^^MOUSE LISTENER^^^^^^^^^^^^^^^^^^^^^^^^^//
 
 
-// prototype of method. roll object to mouse
+// prototype of method. roll object to cursor side
 function rollToMouse(obj){
   window.onmousemove = function(e){
     this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;

@@ -1,7 +1,8 @@
-//TODO DEBUG
 function isElemInArr(array, element){
-  if (array.indexOf(element) === -1) return true;
-  else return false
+  for(var i = 0; i < array.length; i++){
+    if(array[i] == element) return true;
+  }
+  return false;
 }
 
 function stepsForShortestRoute(Ax, Ay, Bx, By, step){

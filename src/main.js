@@ -1,57 +1,78 @@
+//TODO realisation
 var objectsMap = [];
 var objectsRender = [];
 var objectsScrolling = [];
 
-function pushTo(){
-  
-}
+//--------------ENGINE--(RENDER--CAMERA--MAPSCROLLING)----------//
 
-//--------------ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING)----------//
 
 
 function render(objects){
+  console.log()
   for(var i = 0; i < objects.length; i++){
     objects[i].draw();
   }
-  player.draw();
+  player.draw(); //TODO debag: player dont draw without this string from the Camera.focusOn
 }
 
-//TODO realisation
+
 class Camera{
-  constructor(){
-    this.x = canvas.width/2;
-    this.y = canvas.height/2;
-    this.speed;
+  constructor(x = canvas.width/2, y = canvas.height/2, speed = 1, safetyMode = true){
+    this.x = x
+    this.y = y
+    this.speed = speed;
     this.mode;
     this.focus;
+    this.safetyMode = safetyMode;
+
+    console.log("Camera set up")
+    console.log("*Camera* x: " + this.x + ", y: " + this.y + ", speed: " + this.speed + ", safetyMode: " + this.safetyMode)
   }
 
-  //TODO this is the old mapScrolling func; add more arguments
+
   focusOn(obj){
     this.mode = "focusOn";
-    objectsScrolling.splice(objectsScrolling.indexOf(obj))
+    this.focus = obj;
+    objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
     this.x = obj.x; this. y = obj.y;
   }
 
-  //TODO control the camera from keyListener
-  freeWalk(){
+
+  freeWalk(controlKeys = {left:65, right:68, up:87, down:83}){
     if(this.focus) objectsScrolling.push(this.focus);
+    this.focus = undefined;
+    this.mode = "freeWalk";
 
-
+    if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, this.safetyMode);
+    if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, this.safetyMode);
+    if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, this.safetyMode);
+    if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, this.safetyMode);
   }
 
-  //TODO moving camera to input coordinates
+
   goToCoord(x, y){
-    var deltaX = this.x - x;
-    var deltaY = this.y - y;
-    mapScrolling(objectsScrolling, 'x', deltaX);
-    mapScrolling(objectsScrolling, 'y', deltaY);
+    if(this.focus) objectsScrolling.push(this.focus);
+    this.focus = undefined;
+    this.mode = "goToCoord";
+    var deltaX = this.x - x; this.x = deltaX;
+    var deltaY = this.y - y; this.y = deltaY;
+    mapScrolling(objectsScrolling, 'x', deltaX, this.safetyMode);
+    mapScrolling(objectsScrolling, 'y', deltaY, this.safetyMode);
   }
 }
 
 
-//TODO method. checking thefiels 'x' and 'y' in object
-function mapScrolling(objects, sideScroll, interval){
+
+function mapScrolling(objects, sideScroll, interval, fieldsCheck = true){
+  if(fieldsCheck){
+    for(var obj = 0; obj < objects.length; ++obj){
+      if(!objects[obj].x == undefined && !objects[obj].y == undefined){
+        console.log("Object:" + obj + " dont have an 'x' or 'y' field");
+        return false;
+      }
+    }
+  }
+
   for(var obj = 0; obj < objects.length; ++obj){
     switch(sideScroll){
       case "x": objects[obj].x += interval; break;
@@ -60,40 +81,20 @@ function mapScrolling(objects, sideScroll, interval){
   }
 }
 
-//OLD FUNCTION
-function mapScrolling_old(objects){
-  if(obj.side.up == true ){
-    for(var i = 0; i < objects.length; i++){
-        objects[i].y += obj.speed;
-    }
-  }
-  if(obj.side.down == true ){
-    for(var i = 0; i < objects.length; i++){
-        objects[i].y -= obj.speed;
-    }
-  }
-  if(obj.side.left == true ){
-    for(var i = 0; i < objects.length; i++){
-        objects[i].x += obj.speed;
-    }
-  }
-  if(obj.side.right == true){
-    for(var i = 0; i < objects.length; i++){
-        objects[i].x -= obj.speed;
-    }
-  }
-}
-//^^^^^^^^^^^^^^ENGINE--(RENDER--KEYLISTENER--MAPSCROLLING!)^^^^^^^^^^//
+//^^^^^^^^^^^^^^ENGINE--(RENDER--CAMERA--MAPSCROLLING!)^^^^^^^^^^//
 
 
 //-----------------------KEYBOARD LISTENER---------------------//
-document.addEventListener('keydown', keyListener)
-keyListener_downKeys = []
+//TODO DEBUG
+document.addEventListener('keydown', keyListener);
+document.addEventListener('keyup', keyListener);
+keyListener_downKeys = [];
 
 function keyListener(event){
   if(event.type == 'keydown'){
-    if (isElemInArr(keyListener_downKeys, event.keyCode)) keyListener_downKeys.push(event.keyCode);
-  }else{
+    if (!isElemInArr(keyListener_downKeys, event.keyCode)) keyListener_downKeys.push(event.keyCode);
+  }
+  else{
     keyListener_downKeys.splice(keyListener_downKeys.indexOf(event.keyCode), 1);
   }
 }
@@ -149,7 +150,7 @@ function mouseDown(event){
 //^^^^^^^^^^^^^^^^^^^^^^^^^MOUSE LISTENER^^^^^^^^^^^^^^^^^^^^^^^^^//
 
 
-// prototype of method. roll object to mouse
+// prototype of method. roll object to cursor side
 function rollToMouse(obj){
   window.onmousemove = function(e){
     this.x = e.offsetX==undefined?e.layerX:e.offsetX-obj.width/2;
@@ -166,8 +167,10 @@ function rollToMouse(obj){
 }
 
 function isElemInArr(array, element){
-  if (array.indexOf(element) === -1) return true;
-  else return false
+  for(var i = 0; i < array.length; i++){
+    if(array[i] == element) return true;
+  }
+  return false;
 }
 
 function stepsForShortestRoute(Ax, Ay, Bx, By, step){
@@ -191,7 +194,7 @@ var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
 var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
 
-var objects = [];
+
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
@@ -200,12 +203,12 @@ function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
   background = new background(); enemy = new Enemy(); player = new Player(canvas.width/2-25, canvas.height/2-25)
-  camera = new Camera();
+  camera = new Camera(undefined, undefined, 2, false);
   objectsMap.push(background, enemy, player);
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
 
-
+  camera.goToCoord(player.x, player.y + 100);
   camera.focusOn(player);
   game();       //игровой цикл
 }
@@ -215,16 +218,11 @@ function init(){
 function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
 
-
   render(objectsRender);
-  //keyListener(player);
-  //mapScrolling_old(player);
+  player.move();
 
-  console.log(keyListener_downKeys);
-  if(isElemInArr(keyListener_downKeys, '32')){
-    camera.goToCoord(100, 100);
-  }
-
+  //\/\/\/TEST\/\/\/
+  //console.log(keyListener_downKeys);
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
 
@@ -234,8 +232,8 @@ function game(){
 
 
 function background() {
-  this.x = 0;
-  this.y = 0;
+  this.x = 1;
+  this.y = 1;
 }
 
 background.prototype.draw = function() {
@@ -265,19 +263,11 @@ class Player{
     }
   }
 
-  move(){
-    if(player.side.up == true & this.y>0){
-      this.y -= this.speed;
-    }
-    if(player.side.down == true & this.y<(canvas.height - this.height)){
-      this.y += this.speed;
-    }
-    if(player.side.left == true & this.x>0){
-      this.x -= this.speed;
-    }
-    if(player.side.right == true & this.x<canvas.width - this.width){
-      this.x += this.speed;
-    }
+  move(controlKeys = {left:65, right:68, up:87, down:83}){
+    if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, false);
   }
 
   draw(){
