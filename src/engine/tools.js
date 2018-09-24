@@ -14,3 +14,19 @@ function stepsForShortestRoute(Ax, Ay, Bx, By, step){
   this.stepY = this.BCLen/this.Str;
   return([stepX, stepY, steps]);
 }
+
+//TODO for more fields in arguments
+function checkObjectField(obect, field){
+  try{
+    for(var obj = 0; obj < objects.length; ++obj){
+      if(!objects[obj].x == undefined && !objects[obj].y == undefined){
+        return false;
+      }
+    }
+  }catch{
+    if(!object.x == undefined && !object.y == undefined){
+      return false;
+    }
+  }
+  return true;
+}

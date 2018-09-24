@@ -74,4 +74,6 @@ function mapScrolling(objects, sideScroll, interval, fieldsCheck = true){
   }
 }
 
+
+
 //^^^^^^^^^^^^^^ENGINE--(RENDER--CAMERA--MAPSCROLLING!)^^^^^^^^^^//
