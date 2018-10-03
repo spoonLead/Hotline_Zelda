@@ -39,7 +39,7 @@ myscene.set(someParam, someValue)   //more dificulty way
 //----CAMERA----
 //DIFINITION WITH ADDING TO SCENE
 mycamera = new Camera(x = 100, y = 100, speed = 3, safetyMode = false, scene_name = "myscene")
-//x , y - coordinates of camera on this scene_name                Default: centere of canvas
+//x , y - coordinates of camera on this scene_name                Default: center of canvas
 //speed - speed of camera in 'freeWalk' mode                      Default: 1
 //safetyMode - camera work with check for fields presence         Default: true
 //scene_name - scene which camera will be placed                  Default: "mainScene"
