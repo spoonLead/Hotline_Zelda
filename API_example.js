@@ -37,6 +37,7 @@ myscene.set(someParam, someValue)   //more dificulty way
 
 
 //----CAMERA----
+//TODO 1 camera for 1 scene; 1 camera for all scene
 //DIFINITION WITH ADDING TO SCENE
 mycamera = new Camera(x = 100, y = 100, speed = 3, safetyMode = false, scene_name = "myscene")
 //x , y - coordinates of camera on this scene_name                Default: center of canvas
@@ -45,5 +46,17 @@ mycamera = new Camera(x = 100, y = 100, speed = 3, safetyMode = false, scene_nam
 //scene_name - scene which camera will be placed                  Default: "mainScene"
 
 //ADDING TO SCENE WHEN CAMERA CREATED
-mycamera = new Camera(x = 100, y = 100, speed = 3, safetyMode = false)
+mycamera2 = new Camera(x = 100, y = 100, speed = 3, safetyMode = false)
 myscene.addCamera(mycamera2)
+
+//REMOVE CAMERA FROM SCENE
+myscene.removeCamera(mycamera2)
+
+//SET CAMERA MODE
+myscene.mycamera.mode = mode(param, param, ...)
+
+//MODES OF CAMERA
+myscene.mycamera.mode = "FOCUS_ON"(obj, luftRadius = 0, acceleration = 0)
+//obj - object who will be focused CAMERA
+//luftRadius - radius around the object, passing which camera will start to move
+//acceleration - how fast camera will pick up speed
