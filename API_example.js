@@ -57,10 +57,20 @@ myscene.addCamera(mycamera2)
 myscene.removeCamera(mycamera2)
 
 //SET CAMERA MODE
-myscene.mycamera.mode = mode(param, param, ...)
+myscene.mycamera.setMode(param, param, ...)
 
 //MODES OF CAMERA
-myscene.mycamera.mode = "FOCUS_ON"(obj, luftRadius = 0, acceleration = 0)
+//FOCUS_ON MODE
+myscene.mycamera.setMode(mode = "FOCUS_ON", obj, luftRadius = 0, acceleration = 0)
 //obj - object who will be focused CAMERA
 //luftRadius - radius around the object, passing which camera will start to move
 //acceleration - how fast camera will pick up speed
+//FREE_WALK MODE
+myscene.mycamera.setMode(mode = "FREE_WALK", obj, speed = ?, acceleration = 0)
+//obj - object who will be focused CAMERA
+//speed - how much px camera move for one loop (1/60) //TODO ?
+//acceleration - how fast camera will pick up speed
+myscene.mycamera.setMode(mode = "TO_COORD")   //TODO name of mode
+//METHOD OF THIS MODE
+myscene.mycamera.modeToCoord(x, y);
+//x , y - coordinates (px) on scene
