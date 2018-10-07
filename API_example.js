@@ -2,7 +2,11 @@
 
 //----SCENEMANAGER----
 //ADD NEW SCENE
-myscene = new Scene();
+myscene = new Scene(cameraSet = "PTP");
+//  Read "Camera" part for many information
+//  cameraSet (PTP | PTM):
+//      PTP - (peer to peer) one camera for one scene
+//      PTM - (peer to many) one camera for all scenes
 
 
 //ADD OBEJCT TO SCENE
