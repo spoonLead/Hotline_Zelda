@@ -9,6 +9,9 @@ class Player{
     this.speedBoost = 5;
     this.beta;
 
+    this.sprite = new Image();
+    this.sprite.src = "./img/player.jpg";
+
     this.side = {
       left : false,
       right: false,
@@ -22,17 +25,29 @@ class Player{
   }
 
   move(controlKeys = {left:65, right:68, up:87, down:83}){
-    if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, false);
-    if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, false);
-    if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, false);
-    if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, false);
+    if(isElemInArr(keyListener_downKeys, controlKeys.left)){
+      mapScrolling(objectsScrolling, "x", this.speed, false);
+      this.x -= this.speed;
+    }
+    if(isElemInArr(keyListener_downKeys, controlKeys.right)){
+      mapScrolling(objectsScrolling, "x", -this.speed, false);
+      this.x += this.speed;
+    }
+    if(isElemInArr(keyListener_downKeys, controlKeys.up)){
+      mapScrolling(objectsScrolling, "y", this.speed, false);
+      this.y -= this.speed;
+    }
+    if(isElemInArr(keyListener_downKeys, controlKeys.down)){
+      mapScrolling(objectsScrolling, "y", -this.speed, false);
+      this.y += this.speed;
+    }
   }
 
   draw(){
     screen.save();
     screen.translate(this.x+player.width/2, this.y+player.height/2);
     screen.rotate((player.beta * Math.PI)/180);
-    screen.drawImage(playerSp, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
+    screen.drawImage(this.sprite, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
     screen.rotate(-player.beta * Math.PI/180);
     screen.restore();
   }
