@@ -5,8 +5,8 @@ var canvas;
 var screen;
 
 //TODO add the dictionary of image path's for models
-var player; var playerSp = new Image(); playerSp.src = "./img/player.jpg";
-var enemy; var enemySp = new Image(); enemySp.src = "./img/enemy.jpg";
+var player;
+var enemy; 
 var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
 
 
@@ -34,6 +34,7 @@ function game(){
 
   render(objectsRender);
   player.move();
+  enemy.process();
 
   //\/\/\/TEST\/\/\/
   //console.log(keyListener_downKeys);
