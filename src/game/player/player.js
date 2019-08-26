@@ -26,16 +26,20 @@ class Player{
 
   move(controlKeys = {left:65, right:68, up:87, down:83}){
     if(isElemInArr(keyListener_downKeys, controlKeys.left)){
-      mapScrolling(objectsScrolling, "x", this.speed, false);
+      // mapScrolling(objectsScrolling, "x", this.speed, false);
+      this.x -= this.speed;
     }
     if(isElemInArr(keyListener_downKeys, controlKeys.right)){
-      mapScrolling(objectsScrolling, "x", -this.speed, false);
+      // mapScrolling(objectsScrolling, "x", -this.speed, false);
+      this.x += this.speed;
     }
     if(isElemInArr(keyListener_downKeys, controlKeys.up)){
-      mapScrolling(objectsScrolling, "y", this.speed, false);
+      // mapScrolling(objectsScrolling, "y", this.speed, false);
+      this.y -= this.speed;
     }
     if(isElemInArr(keyListener_downKeys, controlKeys.down)){
-      mapScrolling(objectsScrolling, "y", -this.speed, false);
+      // mapScrolling(objectsScrolling, "y", -this.speed, false);
+      this.y += this.speed;
     }
   }
 
