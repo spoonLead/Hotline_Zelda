@@ -6,7 +6,7 @@ var screen;
 
 //TODO add the dictionary of image path's for models
 var player;
-var enemy; 
+var enemy;
 var background;
 
 
@@ -17,12 +17,12 @@ var background;
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  
-  background = new Background(0, 0, "./img/bg.jpg"); 
-  enemy = new Enemy(); 
+
+  background = new Background(0, 0, "./img/bg.jpg");
+  enemy = new Enemy();
   player = new Player(canvas.width/2-25, canvas.height/2-25)
   camera = new Camera(undefined, undefined, 2, false);
-  
+
   objectsMap.push(background, enemy, player);
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
@@ -39,6 +39,7 @@ function game(){
   render(objectsRender);
   player.move();
   enemy.process();
+  camera.focusOn(player);
 
   //\/\/\/TEST\/\/\/
   //console.log(keyListener_downKeys);
@@ -47,7 +48,3 @@ function game(){
 
   requestAnimationFrame(game);  //ограничивает fps
 }
-
-
-
-
