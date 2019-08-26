@@ -1,12 +1,12 @@
   class Background{
-      x; y;
+      x;
+      y;
       backgroundImage = new Image();
-    
+
       constructor(x, y, image){
         this.x = x;
         this.y = y;
         this.backgroundImage.src = image;
-
       }
 
       draw(){
