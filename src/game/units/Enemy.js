@@ -15,10 +15,15 @@ class Enemy{
 
   process(){
     if(hasCollisionComplex(player, this))
-      this.sprite.src = "./img/enemyRed.jpg";
+      this.swapToSprite("./img/enemyRed.jpg")
     else
-      this.sprite.src = "./img/enemy.jpg";
+      this.swapToSprite("./img/enemy.jpg")
       
+  }
+
+  swapToSprite(sprite){
+    if(!this.sprite.src == sprite)
+        this.sprite.src = sprite;
   }
 
 }
