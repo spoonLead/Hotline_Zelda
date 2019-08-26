@@ -5,6 +5,12 @@ function isElemInArr(array, element){
   return false;
 }
 
+// TODO: fix and test 
+function assignValueIfNotAlready(variable, value){
+  if(variable != value)
+    variable = value;
+}
+
 function stepsForShortestRoute(Ax, Ay, Bx, By, step){
   this.ACLen = Bx-Ax;
   this.BCLen = By-Ay;
