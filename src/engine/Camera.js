@@ -13,15 +13,19 @@ class Camera{
 
 
     focusOn(obj){
-      if(this.mode != "focusOn")
-        this.mode = "focusOn";
-
-      if(this.focus != obj){
-        this.focus = obj;
-        objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
-      }
-
-      this.x = obj.x; this. y = obj.y;
+      this.deltaX = canvas.width/2 - obj.width/2- obj.x;
+      this.deltaY = canvas.height/2 - obj.height/2 - obj.y;
+      mapScrolling(objectsScrolling, "x", this.deltaX, false);
+      mapScrolling(objectsScrolling, "y", this.deltaY, false);
+      // if(this.mode != "focusOn")
+      //   this.mode = "focusOn";
+      //
+      // if(this.focus != obj){
+      //   this.focus = obj;
+      //   objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
+      // }
+      //
+      // this.x = obj.x; this. y = obj.y;
     }
 
 
