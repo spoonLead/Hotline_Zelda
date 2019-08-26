@@ -1,5 +1,28 @@
-function collision(x, y, x1, y1, obj){
 
+function hasCollisionObjectWithArea(obj, x, y, width, height){
+    if(hasCollisionVertObjectWithArea(obj,x, width) & hasCollisionHorizontalObjectWithArea(obj,y, height))
+    return true;
+    else
+    return false;
+}
+
+function hasCollisionVertObjectWithArea(obj, x, width){
+    if((obj.x <= x + width) & (x <= obj.x + obj.width))
+        return true
+}
+
+function hasCollisionHorizontalObjectWithArea(obj, y, height){
+    if((obj.y <= y + height) & (y <= obj.y + obj.height))
+        return true;
+}
+
+
+
+function hasCollisionComplex(obj1, obj2){
+    if(hasCollisionVertical(obj1,obj2) & hasCollisionHorizontal(obj1,obj2))
+        return true;
+    else
+        return false;
 }
 
 function hasCollisionVertical(obj1, obj2){
@@ -12,9 +35,4 @@ function hasCollisionHorizontal(obj1, obj2){
         return true;
 }
 
-function hasCollisionComplex(obj1, obj2){
-    if(hasCollisionVertical(obj1,obj2) & hasCollisionHorizontal(obj1,obj2))
-        return true;
-    else
-        return false;
-}
+
