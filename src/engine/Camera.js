@@ -6,32 +6,37 @@ class Camera{
       this.mode;
       this.focus;
       this.safetyMode = safetyMode;
-  
+
       console.log("Camera set up")
       console.log("*Camera* x: " + this.x + ", y: " + this.y + ", speed: " + this.speed + ", safetyMode: " + this.safetyMode)
     }
-  
-  
+
+
     focusOn(obj){
-      this.mode = "focusOn";
-      this.focus = obj;
-      objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
+      if(this.mode != "focusOn")
+        this.mode = "focusOn";
+
+      if(this.focus != obj){
+        this.focus = obj;
+        objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
+      }
+
       this.x = obj.x; this. y = obj.y;
     }
-  
-  
+
+
     freeWalk(controlKeys = {left:65, right:68, up:87, down:83}){
       if(this.focus) objectsScrolling.push(this.focus);
       this.focus = undefined;
       this.mode = "freeWalk";
-  
+
       if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, this.safetyMode);
       if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, this.safetyMode);
       if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, this.safetyMode);
       if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, this.safetyMode);
     }
-  
-  
+
+
     goToCoord(x, y){
       if(this.focus) objectsScrolling.push(this.focus);
       this.focus = undefined;
@@ -42,4 +47,3 @@ class Camera{
       mapScrolling(objectsScrolling, 'y', deltaY, this.safetyMode);
     }
   }
-  
