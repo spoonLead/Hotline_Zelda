@@ -113,8 +113,31 @@ function rollToMouse(obj){
   }
 }
 
-function collision(x, y, x1, y1, obj){
 
+function hasCollisionObjectWithArea(obj, x, y, width, height){
+    if(hasCollisionVertObjectWithArea(obj,x, width) & hasCollisionHorizontalObjectWithArea(obj,y, height))
+    return true;
+    else
+    return false;
+}
+
+function hasCollisionVertObjectWithArea(obj, x, width){
+    if((obj.x <= x + width) & (x <= obj.x + obj.width))
+        return true
+}
+
+function hasCollisionHorizontalObjectWithArea(obj, y, height){
+    if((obj.y <= y + height) & (y <= obj.y + obj.height))
+        return true;
+}
+
+
+
+function hasCollisionComplex(obj1, obj2){
+    if(hasCollisionVertical(obj1,obj2) & hasCollisionHorizontal(obj1,obj2))
+        return true;
+    else
+        return false;
 }
 
 function hasCollisionVertical(obj1, obj2){
@@ -127,98 +150,82 @@ function hasCollisionHorizontal(obj1, obj2){
         return true;
 }
 
-function hasCollisionComplex(obj1, obj2){
-    if(hasCollisionVertical(obj1,obj2) & hasCollisionHorizontal(obj1,obj2))
-        return true;
-    else
-        return false;
-}
 
+
+function render(objects){
+    for(var i = 0; i < objects.length; i++){
+      objects[i].draw();
+    }
+    player.draw(); //TODO debag: player dont draw without this string from the Camera.focusOn
+  }
+  
 //TODO realisation
 var objectsMap = [];
 var objectsRender = [];
 var objectsScrolling = [];
 
-//--------------ENGINE--(RENDER--CAMERA--MAPSCROLLING)----------//
-
-
-
-function render(objects){
-  for(var i = 0; i < objects.length; i++){
-    objects[i].draw();
-  }
-  player.draw(); //TODO debag: player dont draw without this string from the Camera.focusOn
-}
-
-
 class Camera{
-  constructor(x = canvas.width/2, y = canvas.height/2, speed = 1, safetyMode = true){
-    this.x = x
-    this.y = y
-    this.speed = speed;
-    this.mode;
-    this.focus;
-    this.safetyMode = safetyMode;
-
-    console.log("Camera set up")
-    console.log("*Camera* x: " + this.x + ", y: " + this.y + ", speed: " + this.speed + ", safetyMode: " + this.safetyMode)
+    constructor(x = canvas.width/2, y = canvas.height/2, speed = 1, safetyMode = true){
+      this.x = x
+      this.y = y
+      this.speed = speed;
+      this.mode;
+      this.focus;
+      this.safetyMode = safetyMode;
+  
+      console.log("Camera set up")
+      console.log("*Camera* x: " + this.x + ", y: " + this.y + ", speed: " + this.speed + ", safetyMode: " + this.safetyMode)
+    }
+  
+  
+    focusOn(obj){
+      this.mode = "focusOn";
+      this.focus = obj;
+      objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
+      this.x = obj.x; this. y = obj.y;
+    }
+  
+  
+    freeWalk(controlKeys = {left:65, right:68, up:87, down:83}){
+      if(this.focus) objectsScrolling.push(this.focus);
+      this.focus = undefined;
+      this.mode = "freeWalk";
+  
+      if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, this.safetyMode);
+      if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, this.safetyMode);
+      if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, this.safetyMode);
+      if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, this.safetyMode);
+    }
+  
+  
+    goToCoord(x, y){
+      if(this.focus) objectsScrolling.push(this.focus);
+      this.focus = undefined;
+      this.mode = "goToCoord";
+      var deltaX = this.x - x; this.x = deltaX;
+      var deltaY = this.y - y; this.y = deltaY;
+      mapScrolling(objectsScrolling, 'x', deltaX, this.safetyMode);
+      mapScrolling(objectsScrolling, 'y', deltaY, this.safetyMode);
+    }
   }
-
-
-  focusOn(obj){
-    this.mode = "focusOn";
-    this.focus = obj;
-    objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
-    this.x = obj.x; this. y = obj.y;
-  }
-
-
-  freeWalk(controlKeys = {left:65, right:68, up:87, down:83}){
-    if(this.focus) objectsScrolling.push(this.focus);
-    this.focus = undefined;
-    this.mode = "freeWalk";
-
-    if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, this.safetyMode);
-    if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, this.safetyMode);
-    if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, this.safetyMode);
-    if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, this.safetyMode);
-  }
-
-
-  goToCoord(x, y){
-    if(this.focus) objectsScrolling.push(this.focus);
-    this.focus = undefined;
-    this.mode = "goToCoord";
-    var deltaX = this.x - x; this.x = deltaX;
-    var deltaY = this.y - y; this.y = deltaY;
-    mapScrolling(objectsScrolling, 'x', deltaX, this.safetyMode);
-    mapScrolling(objectsScrolling, 'y', deltaY, this.safetyMode);
-  }
-}
-
-
+  
 function mapScrolling(objects, sideScroll, interval, fieldsCheck = true){
-  if(fieldsCheck){
+    if(fieldsCheck){
+      for(var obj = 0; obj < objects.length; ++obj){
+        if(!objects[obj].x == undefined && !objects[obj].y == undefined){
+          console.log("Object:" + obj + " dont have an 'x' or 'y' field");
+          return false;
+        }
+      }
+    }
+  
     for(var obj = 0; obj < objects.length; ++obj){
-      if(!objects[obj].x == undefined && !objects[obj].y == undefined){
-        console.log("Object:" + obj + " dont have an 'x' or 'y' field");
-        return false;
+      switch(sideScroll){
+        case "x": objects[obj].x += interval; break;
+        case "y": objects[obj].y += interval; break;
       }
     }
   }
-
-  for(var obj = 0; obj < objects.length; ++obj){
-    switch(sideScroll){
-      case "x": objects[obj].x += interval; break;
-      case "y": objects[obj].y += interval; break;
-    }
-  }
-}
-
-
-
-//^^^^^^^^^^^^^^ENGINE--(RENDER--CAMERA--MAPSCROLLING!)^^^^^^^^^^//
-
 window.onload = init;
 
 //-----------------------DECLARATIONS---------------------//
@@ -228,7 +235,7 @@ var screen;
 //TODO add the dictionary of image path's for models
 var player;
 var enemy; 
-var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
+var background;
 
 
 
@@ -238,8 +245,12 @@ var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  background = new background(); enemy = new Enemy(); player = new Player(canvas.width/2-25, canvas.height/2-25)
+  
+  background = new Background(0, 0, "./img/bg.jpg"); 
+  enemy = new Enemy(); 
+  player = new Player(canvas.width/2-25, canvas.height/2-25)
   camera = new Camera(undefined, undefined, 2, false);
+  
   objectsMap.push(background, enemy, player);
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
@@ -255,7 +266,7 @@ function game(){
 
   render(objectsRender);
   player.move();
-  enemy.process();
+  //enemy.process();
 
   //\/\/\/TEST\/\/\/
   //console.log(keyListener_downKeys);
@@ -267,14 +278,7 @@ function game(){
 
 
 
-function background() {
-  this.x = 1;
-  this.y = 1;
-}
 
-background.prototype.draw = function() {
-  screen.drawImage(backgroundSp, 0, 0, 1024, 1024, this.x, this.y, 1024, 1024);
-}
 
 class Enemy{
   constructor(){
@@ -291,17 +295,37 @@ class Enemy{
     screen.drawImage(this.sprite, 0, 0, 50, 50, this.x, this.y, 50, 50);
   }
 
-  process(){
-    if(hasCollisionComplex(player, this))
-      this.sprite.src = "./img/enemyRed.jpg";
-    else
-      this.sprite.src = "./img/enemy.jpg";
+  // process(){
+  //   if(hasCollisionComplex(player, this))
+  //     this.swapToSprite("./img/enemyRed.jpg")
+  //   else
+  //     this.swapToSprite("./img/enemy.jpg")
       
-  }
+  // }
+
+  // swapToSprite(sprite){
+  //   if(!this.sprite.src == sprite)
+  //       this.sprite.src = sprite;
+  // }
 
 }
 
 
+  class Background{
+      x; y;
+      backgroundImage = new Image();
+    
+      constructor(x, y, image){
+        this.x = x;
+        this.y = y;
+        this.backgroundImage.src = image;
+
+      }
+
+      draw(){
+        screen.drawImage(this.backgroundImage, 0, 0, 1024, 1024, this.x, this.y, 1024, 1024);
+      }
+  }
 //------CLASS PLAYER-------//
 class Player{
   constructor(x, y){    //x,y - started coordinates

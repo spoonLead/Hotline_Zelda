@@ -7,7 +7,7 @@ var screen;
 //TODO add the dictionary of image path's for models
 var player;
 var enemy; 
-var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg";
+var background;
 
 
 
@@ -17,8 +17,12 @@ var background; var backgroundSp = new Image(); backgroundSp.src = "./img/bg.jpg
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  background = new background(); enemy = new Enemy(); player = new Player(canvas.width/2-25, canvas.height/2-25)
+  
+  background = new Background(0, 0, "./img/bg.jpg"); 
+  enemy = new Enemy(); 
+  player = new Player(canvas.width/2-25, canvas.height/2-25)
   camera = new Camera(undefined, undefined, 2, false);
+  
   objectsMap.push(background, enemy, player);
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
@@ -46,11 +50,4 @@ function game(){
 
 
 
-function background() {
-  this.x = 1;
-  this.y = 1;
-}
 
-background.prototype.draw = function() {
-  screen.drawImage(backgroundSp, 0, 0, 1024, 1024, this.x, this.y, 1024, 1024);
-}
