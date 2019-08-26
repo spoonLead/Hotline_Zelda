@@ -5,6 +5,11 @@ function isElemInArr(array, element){
   return false;
 }
 
+function assignValueIfNotAlready(variable, value){
+  if(variable != value)
+    variable = value;
+}
+
 function stepsForShortestRoute(Ax, Ay, Bx, By, step){
   this.ACLen = Bx-Ax;
   this.BCLen = By-Ay;
@@ -172,32 +177,39 @@ class Camera{
       this.mode;
       this.focus;
       this.safetyMode = safetyMode;
-  
+
       console.log("Camera set up")
       console.log("*Camera* x: " + this.x + ", y: " + this.y + ", speed: " + this.speed + ", safetyMode: " + this.safetyMode)
     }
-  
-  
+
+
     focusOn(obj){
-      this.mode = "focusOn";
-      this.focus = obj;
-      objectsScrolling.splice(objectsScrolling.indexOf(obj), 1);
-      this.x = obj.x; this. y = obj.y;
+      if(this.mode != "focusOn")
+        this.mode = "focusOn";
+
+      this.deltaX = canvas.width/2 - obj.width/2- obj.x;
+      this.deltaY = canvas.height/2 - obj.height/2 - obj.y;
+      mapScrolling(objectsScrolling, "x", this.deltaX, false);
+      mapScrolling(objectsScrolling, "y", this.deltaY, false);
+
+      if(this.focus != obj){
+        this.focus = obj;
+      }
     }
-  
-  
+
+
     freeWalk(controlKeys = {left:65, right:68, up:87, down:83}){
       if(this.focus) objectsScrolling.push(this.focus);
       this.focus = undefined;
       this.mode = "freeWalk";
-  
+
       if(isElemInArr(keyListener_downKeys, controlKeys.left)) mapScrolling(objectsScrolling, "x", this.speed, this.safetyMode);
       if(isElemInArr(keyListener_downKeys, controlKeys.right)) mapScrolling(objectsScrolling, "x", -this.speed, this.safetyMode);
       if(isElemInArr(keyListener_downKeys, controlKeys.up)) mapScrolling(objectsScrolling, "y", this.speed, this.safetyMode);
       if(isElemInArr(keyListener_downKeys, controlKeys.down)) mapScrolling(objectsScrolling, "y", -this.speed, this.safetyMode);
     }
-  
-  
+
+
     goToCoord(x, y){
       if(this.focus) objectsScrolling.push(this.focus);
       this.focus = undefined;
@@ -208,7 +220,7 @@ class Camera{
       mapScrolling(objectsScrolling, 'y', deltaY, this.safetyMode);
     }
   }
-  
+
 function mapScrolling(objects, sideScroll, interval, fieldsCheck = true){
     if(fieldsCheck){
       for(var obj = 0; obj < objects.length; ++obj){
@@ -234,7 +246,7 @@ var screen;
 
 //TODO add the dictionary of image path's for models
 var player;
-var enemy; 
+var enemy;
 var background;
 
 
@@ -245,12 +257,12 @@ var background;
 function init(){
   canvas = document.getElementById("canvas"); //конвенция
   screen = canvas.getContext("2d");
-  
-  background = new Background(0, 0, "./img/bg.jpg"); 
-  enemy = new Enemy(); 
+
+  background = new Background(0, 0, "./img/bg.jpg");
+  enemy = new Enemy();
   player = new Player(canvas.width/2-25, canvas.height/2-25)
   camera = new Camera(undefined, undefined, 2, false);
-  
+
   objectsMap.push(background, enemy, player);
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
@@ -266,7 +278,8 @@ function game(){
 
   render(objectsRender);
   player.move();
-  //enemy.process();
+  enemy.process();
+  camera.focusOn(player);
 
   //\/\/\/TEST\/\/\/
   //console.log(keyListener_downKeys);
@@ -275,10 +288,6 @@ function game(){
 
   requestAnimationFrame(game);  //ограничивает fps
 }
-
-
-
-
 
 class Enemy{
   constructor(){
@@ -290,42 +299,41 @@ class Enemy{
     this.sprite = new Image();
     this.sprite.src = "./img/enemy.jpg";
   }
-  
+
   draw(){
     screen.drawImage(this.sprite, 0, 0, 50, 50, this.x, this.y, 50, 50);
   }
 
-  // process(){
-  //   if(hasCollisionComplex(player, this))
-  //     this.swapToSprite("./img/enemyRed.jpg")
-  //   else
-  //     this.swapToSprite("./img/enemy.jpg")
-      
-  // }
+  process(){
+    if(hasCollisionComplex(player, this))
+      this.swapToSprite("./img/enemyRed.jpg")
+    else
+      this.swapToSprite("./img/enemy.jpg")
+  }
 
-  // swapToSprite(sprite){
-  //   if(!this.sprite.src == sprite)
-  //       this.sprite.src = sprite;
-  // }
+  swapToSprite(sprite){
+    if(this.sprite.src != sprite)
+        this.sprite.src = sprite;
+  }
 
 }
 
-
   class Background{
-      x; y;
+      x;
+      y;
       backgroundImage = new Image();
-    
+
       constructor(x, y, image){
         this.x = x;
         this.y = y;
         this.backgroundImage.src = image;
-
       }
 
       draw(){
         screen.drawImage(this.backgroundImage, 0, 0, 1024, 1024, this.x, this.y, 1024, 1024);
       }
   }
+
 //------CLASS PLAYER-------//
 class Player{
   constructor(x, y){    //x,y - started coordinates
@@ -354,19 +362,19 @@ class Player{
 
   move(controlKeys = {left:65, right:68, up:87, down:83}){
     if(isElemInArr(keyListener_downKeys, controlKeys.left)){
-      mapScrolling(objectsScrolling, "x", this.speed, false);
+      // mapScrolling(objectsScrolling, "x", this.speed, false);
       this.x -= this.speed;
     }
     if(isElemInArr(keyListener_downKeys, controlKeys.right)){
-      mapScrolling(objectsScrolling, "x", -this.speed, false);
+      // mapScrolling(objectsScrolling, "x", -this.speed, false);
       this.x += this.speed;
     }
     if(isElemInArr(keyListener_downKeys, controlKeys.up)){
-      mapScrolling(objectsScrolling, "y", this.speed, false);
+      // mapScrolling(objectsScrolling, "y", this.speed, false);
       this.y -= this.speed;
     }
     if(isElemInArr(keyListener_downKeys, controlKeys.down)){
-      mapScrolling(objectsScrolling, "y", -this.speed, false);
+      // mapScrolling(objectsScrolling, "y", -this.speed, false);
       this.y += this.speed;
     }
   }
