@@ -1,5 +1,6 @@
 //------CLASS PLAYER-------//
 class Player{
+
   constructor(x, y){    //x,y - started coordinates
     this.x = x;
     this.y = y;
@@ -9,7 +10,10 @@ class Player{
     this.speedBoost = 5;
     this.beta;
 
-    this.state = '';
+
+    this.spriteFlag = 0;
+    this.timer = 0;
+
     this.stateMap = {
       runLeft: ["./img/staing/1.png", "./img/staing/2.png", "./img/staing/3.png", "./img/staing/4.png", "./img/staing/5.png", "./img/staing/6.png","./img/staing/7.png","./img/staing/8.png","./img/staing/9.png","./img/staing/10.png","./img/staing/11.png","./img/staing/12.png","./img/staing/13.png","./img/staing/14.png","./img/staing/15.png","./img/staing/16.png","./img/staing/17.png","./img/staing/18.png","./img/staing/19.png","./img/staing/20.png","./img/staing/21.png","./img/staing/22.png","./img/staing/23.png","./img/staing/24.png","./img/staing/25.png","./img/staing/26.png","./img/staing/27.png","./img/staing/28.png","./img/staing/29.png","./img/staing/30.png"],
       runRight: ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
@@ -18,9 +22,7 @@ class Player{
       stay:["./img/stay/1.png"],
     }
 
-
-    this.spriteFlag = 0;
-    this.timer = 0;
+    this.currentState = this.stateMap.stay;
 
     this.currentSprite = new Image();
     this.currentSprite.src = "./img/player.jpg";
@@ -56,59 +58,60 @@ class Player{
   }
 
   stay(){
-    this.stateSwap("stay");
+    this.stateSwap(this.stateMap.stay);
   }
 
   runLeft(){
     this.x -= this.speed;
-    this.stateSwap("runLeft");
+    this.stateSwap(this.stateMap.runLeft);
   }
 
   runRight(){
     this.x += this.speed;
-    this.stateSwap("runRight");
+    this.stateSwap(this.stateMap.runRight);
   }
 
   runTop(){
     this.y -= this.speed;
-    this.stateSwap("runTop");
+    this.stateSwap(this.stateMap.runTop);
   }
 
   runBottom(){
     this.y += this.speed;
-    this.stateSwap("runBottom");
+    this.stateSwap(this.stateMap.runBottom);
   }
 
   stateSwap(state){
-    if(this.state != state){
-      this.state = state;
+    if(this.currentState != state){
+      this.currentState = state;
       this.spriteFlag = 0;
     }
   }
 
   draw(){
-    var spriteGroup = '';
-
-    switch(this.state){
-      case "runLeft":
-        spriteGroup = this.stateMap.runLeft;
-        break;
-      case "runRight":
-        spriteGroup = this.stateMap.runRight;
-        break;
-      case "runTop":
-        spriteGroup = this.stateMap.runTop;
-        break;
-      case "runBottom":
-        spriteGroup = this.stateMap.runBottom;
-        break;
-      case "stay":
-      spriteGroup = this.stateMap.stay;
-    }
+    //var spriteGroup = '';
+    //
+    // switch(this.state){
+    //   case "runLeft":
+    //     spriteGroup = this.stateMap.runLeft;
+    //     break;
+    //   case "runRight":
+    //     spriteGroup = this.stateMap.runRight;
+    //     break;
+    //   case "runTop":
+    //     spriteGroup = this.stateMap.runTop;
+    //     break;
+    //   case "runBottom":
+    //     spriteGroup = this.stateMap.runBottom;
+    //     break;
+    //   case "stay":
+    //   spriteGroup = this.stateMap.stay;
+    // }
 
     //console.log(typeof(sprite[0]));
-    this.currentSprite.src = spriteGroup[this.spriteFlag];
+    this.currentSprite.src = this.currentState[this.spriteFlag];
     //console.log(spriteGroup);
+    //console.log(this.currentState);
 
     screen.save();
     screen.translate(this.x+player.width/2, this.y+player.height/2);
@@ -119,7 +122,7 @@ class Player{
 
 
 
-    if(this.spriteFlag < spriteGroup.length-1)
+    if(this.spriteFlag < this.currentState.length-1)
       this.spriteFlag += 1;
     else
       this.spriteFlag =0
