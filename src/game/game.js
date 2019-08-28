@@ -9,7 +9,10 @@ var player;
 var enemy;
 var background;
 
-
+//// TODO: transfer to engine
+const FPS = 30;
+const FRAMETIME = getFrameTimeForFPS(FPS);
+var CURRENTFRAME; //// TODO: realisation
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
@@ -27,8 +30,6 @@ function init(){
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
 
-
-  setFPS(30);
   gameLoop();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^DIFINITION^^^^^^^^^^^^^^^^^^^^^^//
@@ -42,12 +43,12 @@ async function gameLoop(){
     enemy.process();
     camera.focusOn(player);
 
-    await sleep(this.FPS);
+    await sleep(FRAMETIME);
   }
 }
 
-function setFPS(fps){
-  this.FPS = 1000/fps;
+function getFrameTimeForFPS(fps){
+  return (1000/fps);
 }
 
 function sleep(ms) {
