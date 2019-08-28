@@ -27,10 +27,32 @@ function init(){
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
 
+  console.log(Date.now())
 
-  game();       //игровой цикл
+  setFPS(30);
+  gameLoop();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^DIFINITION^^^^^^^^^^^^^^^^^^^^^^//
+
+async function gameLoop(){
+  while(true){
+    screen.clearRect(0, 0, canvas.width, canvas.height);
+
+    render(objectsRender);
+    player.move();
+    enemy.process();
+    camera.focusOn(player);
+    await sleep(this.FPS);
+  }
+}
+
+function setFPS(fps){
+  this.FPS = 1000/fps;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 //-----GAMELOOP-----//
 function game(){
@@ -41,7 +63,9 @@ function game(){
   enemy.process();
   camera.focusOn(player);
 
+
   //\/\/\/TEST\/\/\/
+  //console.log(player.state)
   //console.log(keyListener_downKeys);
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
