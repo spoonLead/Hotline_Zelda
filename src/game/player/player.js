@@ -10,9 +10,7 @@ class Player{
     this.speedBoost = 5;
     this.beta;
 
-
     this.spriteFlag = 0;
-    this.timer = 0;
 
     this.stateMap = {
       runLeft: ["./img/staing/1.png", "./img/staing/2.png", "./img/staing/3.png", "./img/staing/4.png", "./img/staing/5.png", "./img/staing/6.png","./img/staing/7.png","./img/staing/8.png","./img/staing/9.png","./img/staing/10.png","./img/staing/11.png","./img/staing/12.png","./img/staing/13.png","./img/staing/14.png","./img/staing/15.png","./img/staing/16.png","./img/staing/17.png","./img/staing/18.png","./img/staing/19.png","./img/staing/20.png","./img/staing/21.png","./img/staing/22.png","./img/staing/23.png","./img/staing/24.png","./img/staing/25.png","./img/staing/26.png","./img/staing/27.png","./img/staing/28.png","./img/staing/29.png","./img/staing/30.png"],
@@ -89,38 +87,9 @@ class Player{
   }
 
   draw(){
-    //var spriteGroup = '';
-    //
-    // switch(this.state){
-    //   case "runLeft":
-    //     spriteGroup = this.stateMap.runLeft;
-    //     break;
-    //   case "runRight":
-    //     spriteGroup = this.stateMap.runRight;
-    //     break;
-    //   case "runTop":
-    //     spriteGroup = this.stateMap.runTop;
-    //     break;
-    //   case "runBottom":
-    //     spriteGroup = this.stateMap.runBottom;
-    //     break;
-    //   case "stay":
-    //   spriteGroup = this.stateMap.stay;
-    // }
-
-    //console.log(typeof(sprite[0]));
     this.currentSprite.src = this.currentState[this.spriteFlag];
-    //console.log(spriteGroup);
-    //console.log(this.currentState);
 
-    screen.save();
-    screen.translate(this.x+player.width/2, this.y+player.height/2);
-    screen.rotate((player.beta * Math.PI)/180);
-    screen.drawImage(this.currentSprite, 0, 0, 128, 128, -this.width/2, -this.height/2, 128, 128);
-    screen.rotate(-player.beta * Math.PI/180);
-    screen.restore();
-
-
+    this.drawImageRotateble(this.currentSprite);
 
     if(this.spriteFlag < this.currentState.length-1)
       this.spriteFlag += 1;
@@ -130,11 +99,12 @@ class Player{
 
   }
 
-  drawRotateble(){
+  //TODO set the width and height in args
+  drawImageRotateble(image){
     screen.save();
     screen.translate(this.x+player.width/2, this.y+player.height/2);
     screen.rotate((player.beta * Math.PI)/180);
-    screen.drawImage(this.sprite, 0, 0, 50, 50, -this.width/2, -this.height/2, this.width, this.height);
+    screen.drawImage(image, 0, 0, 128, 128, -this.width/2, -this.height/2, 128, 128);
     screen.rotate(-player.beta * Math.PI/180);
     screen.restore();
   }
