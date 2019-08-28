@@ -9,8 +9,7 @@ class Player{
     this.speed = 5;
     this.speedBoost = 5;
     this.beta;
-
-    this.spritePointer = 0;
+    this.icon = "./img/Groms 128.png";
 
     this.stateMap = {
       runLeft: ["./img/staing/1.png", "./img/staing/2.png", "./img/staing/3.png", "./img/staing/4.png", "./img/staing/5.png", "./img/staing/6.png","./img/staing/7.png","./img/staing/8.png","./img/staing/9.png","./img/staing/10.png","./img/staing/11.png","./img/staing/12.png","./img/staing/13.png","./img/staing/14.png","./img/staing/15.png","./img/staing/16.png","./img/staing/17.png","./img/staing/18.png","./img/staing/19.png","./img/staing/20.png","./img/staing/21.png","./img/staing/22.png","./img/staing/23.png","./img/staing/24.png","./img/staing/25.png","./img/staing/26.png","./img/staing/27.png","./img/staing/28.png","./img/staing/29.png","./img/staing/30.png"],
@@ -20,10 +19,13 @@ class Player{
       stay:["./img/stay/1.png"],
     }
 
-    this.currentSpriteGroup = this.stateMap.stay;
+    this.spritePointer = 0;
+
+    this.currentSpriteGroup;
 
     this.currentSprite = new Image();
-    this.currentSprite.src = "./img/player.jpg";
+    this.currentSprite.src;
+
 
     this.side = {
       left : false,
@@ -93,14 +95,19 @@ class Player{
   }
 
   currentSpriteSourceSetter(){
-    this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
+    if(this.currentSpriteGroup)
+      this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
+    else
+      this.currentSprite.src = this.icon;
   }
 
   spritePointerCounter(){
-    if(this.spritePointer < this.currentSpriteGroup.length-1)
-      this.spritePointer += 1;
-    else
-      this.spritePointer =0
+    if(this.currentSpriteGroup){
+      if(this.spritePointer < this.currentSpriteGroup.length-1)
+        this.spritePointer += 1;
+      else
+        this.spritePointer =0
+    }
   }
 
   //TODO set the width and height in args
