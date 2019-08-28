@@ -87,15 +87,20 @@ class Player{
   }
 
   draw(){
-    this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
-
+    this.currentSpriteSourceSetter();
     this.drawImageRotateble(this.currentSprite);
+    this.spritePointerCounter();
+  }
 
+  currentSpriteSourceSetter(){
+    this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
+  }
+
+  spritePointerCounter(){
     if(this.spritePointer < this.currentSpriteGroup.length-1)
       this.spritePointer += 1;
     else
       this.spritePointer =0
-
   }
 
   //TODO set the width and height in args
