@@ -27,7 +27,6 @@ function init(){
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
 
-  console.log(Date.now())
 
   setFPS(30);
   gameLoop();       //игровой цикл
@@ -42,6 +41,7 @@ async function gameLoop(){
     player.move();
     enemy.process();
     camera.focusOn(player);
+
     await sleep(this.FPS);
   }
 }
