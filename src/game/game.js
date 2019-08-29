@@ -1,17 +1,11 @@
 window.onload = init;
 
 //-----------------------DECLARATIONS---------------------//
-var canvas;
-var screen;
 
-//TODO add the dictionary of image path's for models
-var player;
-var enemy;
-var background;
-
-//// TODO: transfer to engine
-const FPS = 30;
-const FRAMETIME = getFrameTimeForFPS(FPS);
+let player;
+let enemy;
+let background;
+let camera;
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
@@ -25,30 +19,20 @@ function init(){
   player = new Player(canvas.width/2-25, canvas.height/2-25)
   camera = new Camera(undefined, undefined, 2, false);
 
+  // TODO: refactoring
   objectsMap.push(background, enemy, player);
   objectsRender = objectsMap;
   objectsScrolling = objectsMap;
 
-  gameLoop();       //игровой цикл
+  gameLoopStart();       //игровой цикл
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^DIFINITION^^^^^^^^^^^^^^^^^^^^^^//
 
-async function gameLoop(){
-  while(true){
-    game();
-    await sleep(FRAMETIME);
-  }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 //-----GAMELOOP-----//
 function game(){
-  screen.clearRect(0, 0, canvas.width, canvas.height);
+  // screen.clearRect(0, 0, canvas.width, canvas.height);
 
-
+  clearCanvas();
   render(objectsRender);
   player.move();
   enemy.process();
@@ -61,9 +45,4 @@ function game(){
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
 
-}
-
-
-function getFrameTimeForFPS(fps){
-  return (1000/fps);
 }
