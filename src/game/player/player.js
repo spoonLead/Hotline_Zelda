@@ -9,14 +9,14 @@ class Player{
     this.speed = 5;
     this.speedBoost = 5;
     this.beta;
-    this.icon = "./img/Groms 128.png";
 
     this.stateMap = {
-      runLeft: ["./img/staing/1.png", "./img/staing/2.png", "./img/staing/3.png", "./img/staing/4.png", "./img/staing/5.png", "./img/staing/6.png","./img/staing/7.png","./img/staing/8.png","./img/staing/9.png","./img/staing/10.png","./img/staing/11.png","./img/staing/12.png","./img/staing/13.png","./img/staing/14.png","./img/staing/15.png","./img/staing/16.png","./img/staing/17.png","./img/staing/18.png","./img/staing/19.png","./img/staing/20.png","./img/staing/21.png","./img/staing/22.png","./img/staing/23.png","./img/staing/24.png","./img/staing/25.png","./img/staing/26.png","./img/staing/27.png","./img/staing/28.png","./img/staing/29.png","./img/staing/30.png"],
-      runRight: ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
-      runTop: ["./img/staing/1.png"],
-      runBottom: ["./img/staing/1.png"],
-      stay:["./img/stay/1.png"],
+      runLeft:   ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
+      runRight:  ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
+      runTop:    ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
+      runBottom: ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
+      stay:      ["./img/stay/1.png"],
+      default:   ["./img/stay/1.png"],
     }
 
     this.spritePointer = 0;
@@ -24,22 +24,11 @@ class Player{
     this.frameIntervalBetweenSprites = 0;
     this.currentFrameInIntervalBetweenSprites = 1;
 
-    this.currentSpriteGroup;
+    this.currentSpriteGroup = this.stateMap.default;
 
     this.currentSprite = new Image();
     this.currentSprite.src;
 
-
-    this.side = {
-      left : false,
-      right: false,
-      up: false,
-      down: false,
-
-      jump: false,
-      jumpTime: 2, //seconds
-      jumpTimeLost: 2,
-    }
   }
 
   move(controlKeys = {left:65, right:68, up:87, down:83}){
@@ -95,35 +84,17 @@ class Player{
   }
 
   draw(){
+    // TODO: new name for Setters
     this.currentSpriteSourceSetter();
     this.drawImageRotateble(this.currentSprite);
-    this.spritePointerCounter();
+    this.spritePointerSetter();
   }
+
 
   currentSpriteSourceSetter(){
-    if(this.currentSpriteGroup)
-      this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
-    else
-      this.currentSprite.src = this.icon;
+    this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
   }
 
-  spritePointerCounter(){
-    if(this.currentSpriteGroup){
-      if(this.currentFrameInIntervalBetweenSprites == 1){
-        if(this.spritePointer < this.currentSpriteGroup.length-1)
-          this.spritePointer += 1;
-        else
-          this.spritePointer =0;
-      }
-    }
-  }
-
-  function currentFrameBetwnSpritesCounter(){
-    if(this.currentFrameInIntervalBetweenSprites < this.frameIntervalBetweenSprites
-      this.currentFrameInIntervalBetweenSprites += 1
-    else
-      this.currentFrameInIntervalBetweenSprites = 1;
-  }
 
   //TODO set the width and height in args
   drawImageRotateble(image){
@@ -134,6 +105,29 @@ class Player{
     screen.rotate(-player.beta * Math.PI/180);
     screen.restore();
   }
+
+
+  spritePointerSetter(){
+    this.spritePointerCounter();
+    this.currentFrameBtwnSpritesCounter();
+  }
+
+  spritePointerCounter(){
+    if(this.currentFrameInIntervalBetweenSprites == 1){
+        if(this.spritePointer < this.currentSpriteGroup.length-1)
+          this.spritePointer += 1;
+        else
+          this.spritePointer =0;
+      }
+  }
+
+  currentFrameBtwnSpritesCounter(){
+    if(this.currentFrameInIntervalBetweenSprites < this.frameIntervalBetweenSprites)
+      this.currentFrameInIntervalBetweenSprites += 1
+    else
+      this.currentFrameInIntervalBetweenSprites = 1;
+  }
+
 }
 
 //^^^^^^CLASS PLAYER^^^^^^//
