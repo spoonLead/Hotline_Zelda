@@ -19,12 +19,14 @@ class Player{
       default:   ["./img/stay/1.png"],
     }
 
-    this.spritePointer = 0;
 
-    this.frameIntervalBetweenSprites = 0;
-    this.currentFrameInIntervalBetweenSprites = 1;
+
+    this.frameIntervalBtwnSprites = 0;
+    this.currentFrameBtwnSprites = 1;
+
 
     this.currentSpriteGroup = this.stateMap.default;
+    this.spritePointer = 0;
 
     this.currentSprite = new Image();
     this.currentSprite.src;
@@ -79,7 +81,7 @@ class Player{
       this.spritePointer = 0;
       // TODO: fix for currentSpriteGroup.length > 15
       // TODO: fix for float
-      this.frameIntervalBetweenSprites = 30/this.currentSpriteGroup.length;
+      this.frameIntervalBtwnSprites = 30/this.currentSpriteGroup.length;
     }
   }
 
@@ -113,7 +115,7 @@ class Player{
   }
 
   spritePointerCounter(){
-    if(this.currentFrameInIntervalBetweenSprites == 1){
+    if(this.currentFrameBtwnSprites == 1){
         if(this.spritePointer < this.currentSpriteGroup.length-1)
           this.spritePointer += 1;
         else
@@ -122,10 +124,10 @@ class Player{
   }
 
   currentFrameBtwnSpritesCounter(){
-    if(this.currentFrameInIntervalBetweenSprites < this.frameIntervalBetweenSprites)
-      this.currentFrameInIntervalBetweenSprites += 1
+    if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites)
+      this.currentFrameBtwnSprites += 1
     else
-      this.currentFrameInIntervalBetweenSprites = 1;
+      this.currentFrameBtwnSprites = 1;
   }
 
 }
