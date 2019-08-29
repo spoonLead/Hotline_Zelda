@@ -12,7 +12,6 @@ var background;
 //// TODO: transfer to engine
 const FPS = 30;
 const FRAMETIME = getFrameTimeForFPS(FPS);
-var CURRENTFRAME; //// TODO: realisation
 
 //^^^^^^^^^^^^^^^^^^^^^^^DECLARATIONS^^^^^^^^^^^^^^^^^^^^^//
 
@@ -36,19 +35,9 @@ function init(){
 
 async function gameLoop(){
   while(true){
-    screen.clearRect(0, 0, canvas.width, canvas.height);
-
-    render(objectsRender);
-    player.move();
-    enemy.process();
-    camera.focusOn(player);
-
+    game();
     await sleep(FRAMETIME);
   }
-}
-
-function getFrameTimeForFPS(fps){
-  return (1000/fps);
 }
 
 function sleep(ms) {
@@ -58,6 +47,7 @@ function sleep(ms) {
 //-----GAMELOOP-----//
 function game(){
   screen.clearRect(0, 0, canvas.width, canvas.height);
+
 
   render(objectsRender);
   player.move();
@@ -71,5 +61,9 @@ function game(){
   //console.log(window.mouseDown_x +" : "+ window.mouseDown_y + "   r: " + window.mouseDown_button["right"] + " m:" + window.mouseDown_button["middle"] + " l:" + window.mouseDown_button["left"])
   //console.log(window.mouseCanvasPosition_x + " : " + window.mouseCanvasPosition_y);
 
-  requestAnimationFrame(game);  //ограничивает fps
+}
+
+
+function getFrameTimeForFPS(fps){
+  return (1000/fps);
 }
