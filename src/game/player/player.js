@@ -21,6 +21,9 @@ class Player{
 
     this.spritePointer = 0;
 
+    this.frameIntervalBetweenSprites = 0;
+    this.currentFrameInIntervalBetweenSprites = 1;
+
     this.currentSpriteGroup;
 
     this.currentSprite = new Image();
@@ -85,6 +88,9 @@ class Player{
     if(this.currentSpriteGroup != state){
       this.currentSpriteGroup = state;
       this.spritePointer = 0;
+      // TODO: fix for currentSpriteGroup.length > 15
+      // TODO: fix for float
+      this.frameIntervalBetweenSprites = 30/this.currentSpriteGroup.length;
     }
   }
 
@@ -103,11 +109,20 @@ class Player{
 
   spritePointerCounter(){
     if(this.currentSpriteGroup){
-      if(this.spritePointer < this.currentSpriteGroup.length-1)
-        this.spritePointer += 1;
-      else
-        this.spritePointer =0
+      if(this.currentFrameInIntervalBetweenSprites == 1){
+        if(this.spritePointer < this.currentSpriteGroup.length-1)
+          this.spritePointer += 1;
+        else
+          this.spritePointer =0;
+      }
     }
+  }
+
+  function currentFrameBetwnSpritesCounter(){
+    if(this.currentFrameInIntervalBetweenSprites < this.frameIntervalBetweenSprites
+      this.currentFrameInIntervalBetweenSprites += 1
+    else
+      this.currentFrameInIntervalBetweenSprites = 1;
   }
 
   //TODO set the width and height in args
