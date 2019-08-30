@@ -7,6 +7,7 @@ class Player extends Drawable{
     this.y = y;
     this.width = 50;
     this.height = 50;
+    this.speed = 5;
 
     this.stateMap = {
       runLeft:   ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
