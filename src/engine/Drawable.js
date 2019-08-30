@@ -3,7 +3,7 @@ class Drawable{
 
   constructor(){
     this.stateMap={
-      default: ["/engine/img/defaultSprite.png"],
+      default: ["./src/engine/img/defaultSprite.png"],
     }
 
     this.frameIntervalBtwnSprites = 0;
