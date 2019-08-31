@@ -9,12 +9,12 @@ class Player extends Drawable{
     this.height = 50;
     this.speed = 5;
 
-    this.stateMap = {
+    this.animationMap = {
       runLeft:   ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runRight:  ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runTop:    ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runBottom: ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
-      stay:      ["./img/stay/1.png"],
+      stay:      ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
     }
   }
 
@@ -37,27 +37,27 @@ class Player extends Drawable{
   }
 
   stay(){
-    this.stateSwap(this.stateMap.stay);
+    this.setCurrentAnimationForSec(this.animationMap.stay);
   }
 
   runLeft(){
     this.x -= this.speed;
-    this.stateSwap(this.stateMap.runLeft);
+    this.setCurrentAnimationForSec(this.animationMap.runLeft, 2);
   }
 
   runRight(){
     this.x += this.speed;
-    this.stateSwap(this.stateMap.runRight);
+    this.setCurrentAnimationForSec(this.animationMap.runRight);
   }
 
   runTop(){
     this.y -= this.speed;
-    this.stateSwap(this.stateMap.runTop);
+    this.setCurrentAnimationForSec(this.animationMap.runTop);
   }
 
   runBottom(){
     this.y += this.speed;
-    this.stateSwap(this.stateMap.runBottom);
+    this.setCurrentAnimationForSec(this.animationMap.runBottom);
   }
 
 

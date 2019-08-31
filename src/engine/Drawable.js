@@ -2,14 +2,14 @@
 class Drawable{
 
   constructor(){
-    this.stateMap={
+    this.animationMap={
       default: ["./src/engine/img/defaultSprite.png"],
     }
 
     this.frameIntervalBtwnSprites = 0;
     this.currentFrameBtwnSprites = 1;
 
-    this.currentSpriteGroup = this.stateMap.default;
+    this.currentSpriteGroup = this.animationMap.default;
     this.spritePointer = 0;
 
     this.currentSprite = new Image();
@@ -18,9 +18,13 @@ class Drawable{
 
 
 
-  stateSwap(state){
-    if(this.currentSpriteGroup != state){
-      this.currentSpriteGroup = state;
+  setCurrentAnimationForSec(spriteGroup, seconds){
+    this.currentSpriteGroupSwap(spriteGroup);
+  }
+
+  currentSpriteGroupSwap(spriteGroup){
+    if(this.currentSpriteGroup != spriteGroup){
+      this.currentSpriteGroup = spriteGroup;
       this.spritePointer = 0;
       // TODO: fix for currentSpriteGroup.length > 15
       // TODO: fix for float
@@ -41,7 +45,7 @@ class Drawable{
     screen.save();
     screen.translate(this.x+player.width/2, this.y+player.height/2);
     screen.rotate((player.beta * Math.PI)/180);
-    screen.drawImage(image, 0, 0, 128, 128, -this.width/2, -this.height/2, 128, 128);
+    screen.drawImage(image, 0, 0, 128, 128, -this.width/2, -this.height/2, 80, 80);
     screen.rotate(-player.beta * Math.PI/180);
     screen.restore();
   }
@@ -68,4 +72,5 @@ class Drawable{
     else
       this.currentFrameBtwnSprites = 1;
   }
+
 }
