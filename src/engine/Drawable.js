@@ -58,12 +58,19 @@ class Drawable{
   }
 
   spritePointerCounter(){
-    if(this.currentFrameBtwnSprites == 1){
+    if(this.isCurrentFrameForSpriteSwap()){
         if(this.spritePointer < this.currentSpriteGroup.length-1)
           this.spritePointer += 1;
         else
           this.spritePointer =0;
       }
+  }
+
+  isCurrentFrameForSpriteSwap(){
+    if(this.currentFrameBtwnSprites == 1)
+      return true;
+    else
+      return false;
   }
 
   currentFrameBtwnSpritesCounter(){
