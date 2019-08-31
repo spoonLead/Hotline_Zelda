@@ -7,6 +7,7 @@ class Drawable{
     }
 
     this.frameIntervalBtwnSprites = 0;
+    this.excessFrames = 0;
     this.currentFrameBtwnSprites = 1;
 
     this.currentSpriteGroup = this.animationMap.default;
@@ -19,21 +20,22 @@ class Drawable{
 
 
   setCurrentAnimationForSec(spriteGroup, seconds){
-    this.currentSpriteGroupSwap(spriteGroup);
+    this.currentSpriteGroupSwap(spriteGroup, seconds);
   }
 
-  currentSpriteGroupSwap(spriteGroup){
+  currentSpriteGroupSwap(spriteGroup, seconds = 1){
     if(this.currentSpriteGroup != spriteGroup){
       this.currentSpriteGroup = spriteGroup;
       this.spritePointer = 0;
       // TODO: fix for currentSpriteGroup.length > 15
       // TODO: fix for float
-      this.frameIntervalBtwnSprites = 30/this.currentSpriteGroup.length;
+      this.frameIntervalBtwnSprites = Math.floor((30*seconds)/this.currentSpriteGroup.length);
+      this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
     }
   }
 
 
-
+  //// TODO: new name
   currentSpriteSourceSetter(){
     this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
   }
@@ -73,11 +75,21 @@ class Drawable{
       return false;
   }
 
+
   currentFrameBtwnSpritesCounter(){
-    if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites)
-      this.currentFrameBtwnSprites += 1
-    else
-      this.currentFrameBtwnSprites = 1;
+    if(this.excessFrames > 0){
+      if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites+1)
+        this.currentFrameBtwnSprites += 1
+      else
+        this.currentFrameBtwnSprites = 1;
+    }
+    else {
+      if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites)
+        this.currentFrameBtwnSprites += 1
+      else
+        this.currentFrameBtwnSprites = 1;
+    }
+
   }
 
 }
