@@ -7,14 +7,15 @@ class Player extends Drawable{
     this.y = y;
     this.width = 50;
     this.height = 50;
-    this.speed = 5;
+    this.speed = 10;
 
     this.animationMap = {
       runLeft:   ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runRight:  ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runTop:    ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runBottom: ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
-      stay:      ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
+      stay:      ["./img/stay/1.png","./img/stay/2.png","./img/stay/3.png",
+                  "./img/stay/4.png","./img/stay/4.png"],
     }
   }
 
@@ -42,7 +43,7 @@ class Player extends Drawable{
 
   runLeft(){
     this.x -= this.speed;
-    this.setCurrentAnimationForSec(this.animationMap.runLeft, 2);
+    this.setCurrentAnimationForSec(this.animationMap.runLeft);
   }
 
   runRight(){
@@ -65,7 +66,7 @@ class Player extends Drawable{
   draw(){
     // TODO: new name for Setters
     this.currentSpriteSourceSetter();
-    this.drawImageRotateble(undefined);
+    this.drawImageRotateble();
     this.spritePointerSetter();
   }
 
