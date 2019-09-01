@@ -6,6 +6,8 @@ class Drawable{
       default: ["./src/engine/img/defaultSprite.png"],
     }
 
+    this.animationFrameTime = 1;
+
     this.frameIntervalBtwnSprites = 0;
     this.excessFrames = 0;
     this.currentFrameBtwnSprites = 1;
@@ -19,28 +21,36 @@ class Drawable{
 
 
 
-  setCurrentAnimationForSec(spriteGroup, seconds){
+  setCurrentAnimationForSec(spriteGroup, seconds = 1){
     this.currentSpriteGroupSwap(spriteGroup, seconds);
-    this.calculateEcessFramesForCurrentAnim();
+    this.animationFrameTimer(seconds);
+    this.calculateExcessFramesForCurrentAnim();
   }
 
-  calculateEcessFramesForCurrentAnim(){
-    if(CURRENTFRAME == 1){
-      this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
-    }
-  }
-
-  currentSpriteGroupSwap(spriteGroup, seconds = 1){
+  currentSpriteGroupSwap(spriteGroup, seconds){
     if(this.currentSpriteGroup != spriteGroup){
       this.currentSpriteGroup = spriteGroup;
       this.spritePointer = 0;
       // TODO: fix for currentSpriteGroup.length > 15
-      this.frameIntervalBtwnSprites = Math.floor((30*seconds)/this.currentSpriteGroup.length);
+      this.frameIntervalBtwnSprites = Math.floor((FPS*seconds)/this.currentSpriteGroup.length);
+      this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
+      this.animationFrameTime = 0;
+    }
+  }
+
+  animationFrameTimer(seconds){
+    this.animationFrameTime += 1;
+  }
+
+  calculateExcessFramesForCurrentAnim(seconds){
+    if(this.animationFrameTime == FPS * seconds){
+      this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
     }
   }
 
 
-  //// TODO: new name
+
+  //// TODO: new name?
   currentSpriteSourceSetter(){
     this.currentSprite.src = this.currentSpriteGroup[this.spritePointer];
   }
@@ -65,15 +75,15 @@ class Drawable{
   }
 
   spritePointerCounter(){
-    if(this.isCurrentFrameForSpriteSwap()){
+    if(this.isCurrentFrameForMovePointer()){
         if(this.spritePointer < this.currentSpriteGroup.length-1)
           this.spritePointer += 1;
         else
-          this.spritePointer =0;
+          this.spritePointer = 0;
       }
   }
 
-  isCurrentFrameForSpriteSwap(){
+  isCurrentFrameForMovePointer(){
     if(this.currentFrameBtwnSprites == 1)
       return true;
     else
