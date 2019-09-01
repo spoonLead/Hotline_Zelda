@@ -29,6 +29,13 @@ class Drawable{
     this.calculateExcessFramesForCurrentAnim();
   }
 
+  isAnimationChanged(spriteGroup){
+    if(this.currentSpriteGroup != spriteGroup)
+      return true;
+    else
+      return false;
+  }
+
   currentSpriteGroupSwap(spriteGroup, seconds){
     if(this.currentSpriteGroup != spriteGroup){
       this.currentSpriteGroup = spriteGroup;
