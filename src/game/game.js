@@ -21,7 +21,7 @@ function init(){
 
   // TODO: refactoring
   objectsMap.push(background, enemy, player);
-  objectsRender = objectsMap;
+  objectsRender.push(background, enemy);
   objectsScrolling = objectsMap;
 
   gameLoopStart();       //игровой цикл
@@ -33,6 +33,7 @@ function game(){
   // screen.clearRect(0, 0, canvas.width, canvas.height);
 
   clearCanvas();
+
   render(objectsRender);
   player.move();
   enemy.process();
