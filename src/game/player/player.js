@@ -15,7 +15,7 @@ class Player extends Drawable{
       runTop:    ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       runBottom: ["./img/runRight/1.png","./img/runRight/2.png","./img/runRight/3.png"],
       stay:      ["./img/stay/1.png","./img/stay/2.png","./img/stay/3.png",
-                  "./img/stay/4.png","./img/stay/4.png"],
+                  "./img/stay/4.png"],
     }
   }
 
@@ -38,7 +38,7 @@ class Player extends Drawable{
   }
 
   stay(){
-    this.setCurrentAnimationForSec(this.animationMap.stay);
+    this.setCurrentAnimationForSec(this.animationMap.stay, 1.5);
   }
 
   runLeft(){
