@@ -6,7 +6,9 @@ class Drawable{
       default: ["./src/engine/img/defaultSprite.png"],
     }
 
-    this.animationFrameTime = 1;
+    this.animationSecTime;
+
+    this.framesFromStartAnimation = 1;
 
     this.frameIntervalBtwnSprites = 0;
     this.excessFrames = 0;
@@ -23,7 +25,7 @@ class Drawable{
 
   setCurrentAnimationForSec(spriteGroup, seconds = 1){
     this.currentSpriteGroupSwap(spriteGroup, seconds);
-    this.animationFrameTimer();
+    this.framesFromStartAnimationTimer();
     this.calculateExcessFramesForCurrentAnim();
   }
 
@@ -31,19 +33,20 @@ class Drawable{
     if(this.currentSpriteGroup != spriteGroup){
       this.currentSpriteGroup = spriteGroup;
       this.spritePointer = 0;
+      this.animationSecTime = seconds;
       // TODO: fix for currentSpriteGroup.length > 15
-      this.frameIntervalBtwnSprites = Math.floor((FPS*seconds)/this.currentSpriteGroup.length);
+      this.frameIntervalBtwnSprites = Math.floor((FPS*this.animationSecTime)/this.currentSpriteGroup.length);
       this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
-      this.animationFrameTime = 0;
+      this.framesFromStartAnimation = 0;
     }
   }
 
-  animationFrameTimer(){
-    this.animationFrameTime += 1;
+  framesFromStartAnimationTimer(){
+    this.framesFromStartAnimation += 1;
   }
 
-  calculateExcessFramesForCurrentAnim(seconds){
-    if(this.animationFrameTime == FPS * seconds){
+  calculateExcessFramesForCurrentAnim(){
+    if(this.framesFromStartAnimation == FPS * this.animationSecTime){
       this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
     }
   }
