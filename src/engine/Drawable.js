@@ -23,7 +23,7 @@ class Drawable{
 
   setCurrentAnimationForSec(spriteGroup, seconds = 1){
     this.currentSpriteGroupSwap(spriteGroup, seconds);
-    this.animationFrameTimer(seconds);
+    this.animationFrameTimer();
     this.calculateExcessFramesForCurrentAnim();
   }
 
@@ -38,7 +38,7 @@ class Drawable{
     }
   }
 
-  animationFrameTimer(seconds){
+  animationFrameTimer(){
     this.animationFrameTime += 1;
   }
 
