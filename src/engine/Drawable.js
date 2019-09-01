@@ -37,15 +37,19 @@ class Drawable{
   }
 
   currentSpriteGroupSwap(spriteGroup, seconds){
-    if(this.currentSpriteGroup != spriteGroup){
+    if(this.isAnimationChanged(spriteGroup)){
       this.currentSpriteGroup = spriteGroup;
-      this.spritePointer = 0;
-      this.animationSecTime = seconds;
-      // TODO: fix for currentSpriteGroup.length > 15
-      this.frameIntervalBtwnSprites = Math.floor((FPS*this.animationSecTime)/this.currentSpriteGroup.length);
-      this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
-      this.framesFromStartAnimation = 0;
+      this.setFieldsForChangedAnimation(seconds);
     }
+  }
+
+  setFieldsForChangedAnimation(seconds){
+    this.spritePointer = 0;
+    this.animationSecTime = seconds;
+    // TODO: fix for currentSpriteGroup.length > 15
+    this.frameIntervalBtwnSprites = Math.floor((FPS*this.animationSecTime)/this.currentSpriteGroup.length);
+    this.excessFrames = FPS - this.frameIntervalBtwnSprites * this.currentSpriteGroup.length;
+    this.framesFromStartAnimation = 0;
   }
 
   framesFromStartAnimationTimer(){
