@@ -110,7 +110,7 @@ class Drawable{
 
 
   currentFrameBtwnSpritesCounter(){
-    if(this.excessFrames > 0){
+    if(this.isExcessFrames()){
       if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites+1)
         this.currentFrameBtwnSprites += 1
       else{
@@ -126,6 +126,11 @@ class Drawable{
         this.currentFrameBtwnSprites = 1;
     }
 
+  }
+
+  isExcessFrames(){
+    if(this.excessFrames > 0)
+      return true;
   }
 
 }
