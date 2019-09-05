@@ -110,22 +110,26 @@ class Drawable{
 
 
   currentFrameBtwnSpritesCounter(){
-    if(this.isExcessFrames()){
-      if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites+1)
-        this.currentFrameBtwnSprites += 1
-      else{
-        this.currentFrameBtwnSprites = 1;
-        this.excessFrames -= 1;
-      }
+    if(this.isExcessFrames())
+      this.countCurrFrameBtwnSpritesAddingExcess();
+    else
+      this.countCurrFrameBtwnSprites();
+  }
 
+  countCurrFrameBtwnSpritesAddingExcess(){
+    if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites+1)
+      this.currentFrameBtwnSprites += 1
+    else{
+      this.currentFrameBtwnSprites = 1;
+      this.excessFrames -= 1;
     }
-    else {
-      if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites)
-        this.currentFrameBtwnSprites += 1
-      else
-        this.currentFrameBtwnSprites = 1;
-    }
+  }
 
+  countCurrFrameBtwnSprites(){
+    if(this.currentFrameBtwnSprites < this.frameIntervalBtwnSprites)
+      this.currentFrameBtwnSprites += 1
+    else
+      this.currentFrameBtwnSprites = 1;
   }
 
   isExcessFrames(){
