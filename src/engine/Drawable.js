@@ -87,7 +87,7 @@ class Drawable{
 
 
 
-  spritePointerSetter(){
+  spritesCounter(){
     this.spritePointerCounter();
     this.currentFrameBtwnSpritesCounter();
   }

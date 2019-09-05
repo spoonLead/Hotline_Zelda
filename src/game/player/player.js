@@ -67,7 +67,7 @@ class Player extends Drawable{
     // TODO: new name for Setters
     this.currentSpriteSourceSetter();
     this.drawImageRotateble();
-    this.spritePointerSetter();
+    this.spritesCounter();
   }
 
 
