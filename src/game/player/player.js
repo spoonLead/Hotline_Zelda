@@ -38,27 +38,27 @@ class Player extends Drawable{
   }
 
   stay(){
-    this.setCurrentAnimationForSec(this.animationMap.stay, 1.5);
+    this.setAnimationForSec(this.animationMap.stay, 1.5);
   }
 
   runLeft(){
     this.x -= this.speed;
-    this.setCurrentAnimationForSec(this.animationMap.runLeft);
+    this.setAnimationForSec(this.animationMap.runLeft);
   }
 
   runRight(){
     this.x += this.speed;
-    this.setCurrentAnimationForSec(this.animationMap.runRight);
+    this.setAnimationForSec(this.animationMap.runRight);
   }
 
   runTop(){
     this.y -= this.speed;
-    this.setCurrentAnimationForSec(this.animationMap.runTop);
+    this.setAnimationForSec(this.animationMap.runTop);
   }
 
   runBottom(){
     this.y += this.speed;
-    this.setCurrentAnimationForSec(this.animationMap.runBottom);
+    this.seеAnimationForSec(this.animationMap.runBottom);
   }
 
 
